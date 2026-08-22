@@ -64,6 +64,7 @@ github/workflows-ready/dependency-review.yml
 github/workflows-ready/pypi-publish.yml
 github/workflows-ready/release-build.yml
 github/workflows-ready/scorecard.yml
+llms.txt
 packages/contracts/LICENSE
 packages/contracts/NOTICE
 packages/contracts/pyproject.toml
@@ -165,6 +166,7 @@ spec/boot-lock-v1alpha1.schema.json
 spec/installation-receipt-v1alpha1.schema.json
 spec/plugin-descriptor-v1alpha1.schema.json
 spec/release-lock-v1alpha1.schema.json
+tests/test_agent_entrypoints.py
 tests/test_first_party.py
 tests/test_microkernel.py
 tests/test_release_pipeline.py
