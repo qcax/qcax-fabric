@@ -1,0 +1,22 @@
+{
+  "authorized_by_current_user": true,
+  "enabled_workflows": [
+    "ci.yml",
+    "codeql.yml",
+    "conformance.yml",
+    "dependency-review.yml",
+    "release-build.yml",
+    "scorecard.yml"
+  ],
+  "existing_target_repository_search": "NO_MATCH_SURFACED_2026-08-22",
+  "github_mutation_performed": false,
+  "held_workflows": [
+    "pypi-publish.yml"
+  ],
+  "next_external_action": "Create public qcax/qcax-fabric with one seed README commit on main (no license/gitignore required). The seed commit provides the parent/default branch required by the available connector; QCAX will replace the tree through a bootstrap branch and PR.",
+  "repository_creation_bootstrap_requirement": "EXISTING_MAIN_PARENT_COMMIT_REQUIRED_BY_AVAILABLE_CONNECTOR_CREATE_COMMIT_FLOW",
+  "repository_creation_capability": "BLOCKED_CONNECTOR_NO_CREATE_REPOSITORY_ACTION",
+  "schema": "qcax.github.publication-state/1",
+  "state": "R5_AUTHORIZED_PREPUBLICATION_READY",
+  "target_repository": "qcax/qcax-fabric"
+}

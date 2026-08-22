@@ -1,0 +1,6 @@
+# Replace placeholders only after actual owner/team identities are confirmed.
+/packages/host/                 @OWNER_OR_TEAM
+/packages/contracts/            @OWNER_OR_TEAM
+/spec/                          @OWNER_OR_TEAM
+/github/workflow-templates/     @OWNER_OR_TEAM
+/docs/ADR-*                     @OWNER_OR_TEAM

@@ -1,0 +1,20 @@
+{
+  "connector_boundaries": [
+    "No create-repository action surfaced",
+    "No repository ruleset/settings/security/environments mutation action surfaced",
+    "No GitHub release creation action surfaced",
+    "Existing repository file/branch/commit/PR/CI read/write actions are available after repo creation and explicit authorization"
+  ],
+  "executors": {
+    "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS": "Runnable through connected GitHub after explicit task-local authorization and repository existence.",
+    "CONDITIONAL_FUTURE": "Only after stated trigger/evidence exists.",
+    "GITHUB_UI_OR_EXTERNAL_API_REQUIRED": "Repository/account setting is not exposed by the current connector; perform in GitHub UI or another explicitly authorized API client.",
+    "LOCAL_PREPUBLICATION": "Runnable in current sandbox without external mutation.",
+    "PYPI_MANUAL_OR_EXTERNAL": "PyPI namespace/trusted-publisher configuration is external to the available GitHub connector.",
+    "USER_MANUAL_REQUIRED": "Current connector cannot create the repository/account-level prerequisite; user performs this exact UI/API step."
+  },
+  "owner_candidate": "qcax",
+  "owner_type_observed": "User",
+  "repository_candidate": "qcax-fabric",
+  "schema": "qcax.github.executor-matrix/1"
+}

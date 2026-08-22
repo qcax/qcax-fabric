@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qcax-fabric-contracts"
+version = "0.1.0a1"
+description = "Language-neutral contract bindings for QCAX Fabric"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+dependencies = []
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+[tool.setuptools.packages.find]
+where = ["src"]

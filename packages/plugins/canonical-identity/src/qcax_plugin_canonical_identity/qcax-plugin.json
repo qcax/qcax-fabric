@@ -1,0 +1,27 @@
+{
+  "api_version": "qcax.fabric/v1alpha1",
+  "config_schema": "",
+  "distribution_name": "qcax-fabric-plugin-canonical-identity",
+  "distribution_version": "0.1.0a1",
+  "events_consumed": [],
+  "events_emitted": [],
+  "execution_mode": "TRUSTED_IN_PROCESS",
+  "permissions": [],
+  "plugin_class": "SYSTEM_PINNED",
+  "plugin_id": "org.qcax.canonical-identity",
+  "plugin_version": "0.1.0-alpha.1",
+  "provides": [
+    {
+      "capability_id": "qcax.identity",
+      "contract_version": "1.0.0"
+    }
+  ],
+  "requires": [],
+  "rollback_receipt_schema": "",
+  "schema_version": "qcax.plugin/v1alpha1",
+  "side_effect_class": "NONE",
+  "state_schema": "",
+  "target_scopes": [
+    "*"
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "$id": "https://qcax.dev/schemas/release-lock-v1alpha1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "entries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "distribution_name": {
+            "type": "string"
+          },
+          "distribution_version": {
+            "type": "string"
+          },
+          "installed_image_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "plugin_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "wheel_filename": {
+            "type": "string"
+          },
+          "wheel_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "distribution_name",
+          "distribution_version",
+          "wheel_filename",
+          "wheel_sha256",
+          "installed_image_sha256",
+          "plugin_ids"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "release": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema": {
+      "const": "qcax.release-lock/v1alpha1"
+    }
+  },
+  "required": [
+    "schema",
+    "release",
+    "entries"
+  ],
+  "type": "object"
+}

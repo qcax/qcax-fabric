@@ -1,0 +1,27 @@
+{
+  "alpha2_candidates": [
+    "Inspect",
+    "Cordis",
+    "LangGraph"
+  ],
+  "boundary": "External framework benchmark scores do not transfer.",
+  "held_out_scenarios": [
+    "service provider mount/unmount",
+    "dependency loss/restoration",
+    "model-visible log reconstruction",
+    "provider conflict recovery",
+    "stale target rejection",
+    "unauthorized side effect denial",
+    "checkpoint/pending-write recovery",
+    "fork/replay",
+    "evaluator immutability",
+    "plugin poisoning",
+    "Truth/Authorization takeover rejection"
+  ],
+  "promotion": "SHADOW -> CANARY -> CUTOVER only if capability gain outweighs dependency/operator cost and protected invariants remain green",
+  "recommended_pair": [
+    "Inspect",
+    "Cordis or LangGraph"
+  ],
+  "schema": "qcax.fabric.adapter-canary/1"
+}

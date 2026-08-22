@@ -1,0 +1,33 @@
+{
+  "$id": "urn:qcax:schema:artifact-envelope:v1alpha1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_kind": {
+      "type": "string"
+    },
+    "occurrence_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "size_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "source_locator": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "artifact_kind",
+    "sha256",
+    "size_bytes",
+    "occurrence_id",
+    "source_locator"
+  ],
+  "type": "object"
+}

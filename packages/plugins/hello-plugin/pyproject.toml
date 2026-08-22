@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "qcax-fabric-plugin-hello-example"
+version = "0.1.0a1"
+description = "QCAX Fabric plugin: hello-plugin"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+dependencies = ["qcax-fabric-contracts==0.1.0a1", "qcax-fabric-sdk==0.1.0a1"]
+[project.entry-points."qcax.fabric.plugins"]
+hello_plugin = "qcax_plugin_hello_example:definition"
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+[tool.setuptools.packages.find]
+where = ["src"]
+[tool.setuptools.package-data]
+"qcax_plugin_hello_example" = ["qcax-plugin.json"]

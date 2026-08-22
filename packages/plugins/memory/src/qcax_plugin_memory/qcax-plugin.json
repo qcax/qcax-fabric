@@ -1,0 +1,40 @@
+{
+  "api_version": "qcax.fabric/v1alpha1",
+  "config_schema": "",
+  "distribution_name": "qcax-fabric-plugin-memory",
+  "distribution_version": "0.1.0a1",
+  "events_consumed": [],
+  "events_emitted": [],
+  "execution_mode": "TRUSTED_IN_PROCESS",
+  "permissions": [],
+  "plugin_class": "FIRST_PARTY",
+  "plugin_id": "org.qcax.memory",
+  "plugin_version": "0.1.0-alpha.1",
+  "provides": [
+    {
+      "capability_id": "qcax.memory",
+      "contract_version": "1.0.0"
+    }
+  ],
+  "requires": [
+    {
+      "capability_id": "qcax.source.admission",
+      "contract_version": "1.0.0"
+    },
+    {
+      "capability_id": "qcax.identity",
+      "contract_version": "1.0.0"
+    },
+    {
+      "capability_id": "qcax.provenance",
+      "contract_version": "1.0.0"
+    }
+  ],
+  "rollback_receipt_schema": "urn:qcax:schema:rollback-receipt:v1alpha1",
+  "schema_version": "qcax.plugin/v1alpha1",
+  "side_effect_class": "LOCAL_REVERSIBLE",
+  "state_schema": "",
+  "target_scopes": [
+    "*"
+  ]
+}

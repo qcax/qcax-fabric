@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "qcax-fabric-host"
+version = "0.1.0a1"
+description = "Tiny trusted host for QCAX Fabric"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+dependencies = ["qcax-fabric-contracts==0.1.0a1", "qcax-fabric-sdk==0.1.0a1"]
+[tool.setuptools]
+package-dir = {"" = "src"}
+[tool.setuptools.packages.find]
+where = ["src"]
