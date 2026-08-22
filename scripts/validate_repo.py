@@ -78,6 +78,43 @@ ok('8 implemented plugin packages' in readme,'README missing implemented plugin 
 ok('54 structurally pluginizable roles' in readme,'README missing structural role boundary')
 ok('DURABLE events are reserved but unsupported in alpha1' in readme,'README overclaims durable events')
 
+# Release workflow/contract hardening is fail-closed and statically auditable.
+release_contract=json.loads((ROOT/'github/RELEASE_ARTIFACT_CONTRACT.json').read_text(encoding='utf-8'))
+ok(release_contract.get('uploaded_asset_count')==30,'release contract must declare 30 uploaded assets')
+groups={x['id']:x for x in release_contract.get('uploaded_groups',[])}
+ok(groups.get('WHEELS',{}).get('count')==11,'release contract wheel count')
+ok(groups.get('SDISTS',{}).get('count')==11,'release contract sdist count')
+ok({'RELEASE_LOCK','SBOM','SPEC_BUNDLE','CONFORMANCE_BUNDLE','RELEASE_NOTES','QCAX_PROVENANCE','PAYLOAD_MANIFEST','SHA256SUMS'} <= set(groups),'release contract control groups')
+rules=' '.join(release_contract.get('rules',[])).lower()
+for token in ['exact 40-hex source commit','installedimage','spdx 2.3','provider-state reconciliation','published immutable release is never repaired in place']:
+ ok(token in rules,f'release contract missing hardening rule: {token}')
+
+release_wf=(ROOT/'.github/workflows/release-build.yml').read_text(encoding='utf-8')
+ok('queue: max' in release_wf,'release workflow missing queued concurrency')
+ok('cancel-in-progress: true' not in release_wf,'release workflow may cancel release transaction')
+ok('PUBLISH-v0.1.0-alpha.1' in release_wf,'release workflow missing exact publish confirmation token')
+ok(release_wf.count('actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d')==2,'release workflow consolidated attestation pin/count')
+ok('persist-credentials: false' in release_wf,'release workflow checkout credentials persist')
+ok('--clobber' not in release_wf,'release workflow uses destructive release asset clobber')
+ok('expected_commit' in release_wf and 'GITHUB_SHA' in release_wf,'release workflow missing exact source guard')
+ok('artifact-metadata: write' in release_wf,'release workflow missing current actions/attest metadata permission')
+conformance_wf=(ROOT/'.github/workflows/conformance.yml').read_text(encoding='utf-8')
+ok('release-payload-pr:' in conformance_wf,'conformance workflow missing safe PR release payload job')
+ok('build_release_candidate.py' in conformance_wf and 'verify_release_payload.py' in conformance_wf,'PR release payload job incomplete')
+ok('anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610' in conformance_wf,'PR release payload SBOM action pin mismatch')
+for script in [
+ 'release_common.py','run_standard_sdist_repro.py','verify_sdist_parity.py',
+ 'build_release_candidate.py','prepare_release_sbom_root.py','finalize_release_payload.py',
+ 'verify_release_payload.py','release_provider.py','verify_preflight_attestations.py',
+ 'reconcile_release_prestate.py','publish_immutable_release.py','verify_published_release.py',
+ 'wait_for_immutable_release.py','tag_replay_verify.py'
+]:
+ ok((ROOT/'scripts'/script).exists(),f'missing release hardening script: {script}')
+ok((ROOT/'requirements/release.txt').exists(),'missing release requirements lock')
+ok((ROOT/'release/RELEASE_NOTES-v0.1.0-alpha.1.md').exists(),'missing alpha1 release notes')
+ok((ROOT/'github/RELEASE_PROVIDER_STATE_MACHINE.json').exists(),'missing release provider state machine')
+ok((ROOT/'tests/test_release_pipeline.py').exists(),'missing release pipeline stateful tests')
+
 # REPO_TREE parity excluding itself
 tree=ROOT/'github/REPO_TREE.txt'
 actual=sorted(p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*') if p.is_file() and p!=tree and '.git' not in p.relative_to(ROOT).parts)

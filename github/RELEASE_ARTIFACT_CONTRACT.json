@@ -1,27 +1,88 @@
 {
-  "artifacts": [
-    "source archive from GitHub",
-    "qcax-fabric-contracts wheel+sdist",
-    "qcax-fabric-sdk wheel+sdist",
-    "qcax-fabric-host wheel+sdist",
-    "first-party plugin wheels+sdists",
-    "JSON Schema contract bundle",
-    "conformance vectors/results",
-    "SBOM",
-    "GitHub artifact attestations",
-    "release notes/migration notes",
-    "QCAX detached manifest/provenance receipt",
-    "release-lock.json generated from exact attached standard wheels"
+  "package_version": "0.1.0a1",
+  "provider_generated_after_publish": [
+    "GitHub source ZIP",
+    "GitHub source TAR.GZ",
+    "GitHub immutable-release attestation"
   ],
   "release": "v0.1.0-alpha.1",
   "rules": [
-    "all hashes tied to exact tag commit",
-    "attestation is provenance evidence, not security correctness",
-    "no long-lived PyPI token",
-    "no mutable action tags in enabled workflows",
-    "release remains prerelease until beta gates",
-    "release wheel builder is the standard setuptools/pip reproducibility path, not the QCAX reference builder",
-    "InstalledImage BootLock values are reconstructed from the exact release wheels before publication",
-    "raw PluginEnvelope objects are not executable admission capabilities"
+    "all uploaded assets bind one exact 40-hex source commit and v0.1.0-alpha.1",
+    "release-lock is generated from the exact 11 uploaded standard-built wheels",
+    "11 wheel twins must be byte-identical across two clean standard builds",
+    "11 unmodified backend sdists must have equivalent normalized path+content manifests across two clean builds",
+    "every sdist must rebuild/install to the same InstalledImage identity and plugin-id set as its exact release-lock wheel entry",
+    "SPDX 2.3 SBOM must cover all 11 released distributions at the exact package version",
+    "spec bundle must contain exactly the five public v1alpha1 JSON Schemas plus a deterministic internal manifest",
+    "conformance bundle must contain passing contract, wheel, sdist and sdist-installed-image receipts",
+    "payload-manifest hashes the 28 primary assets; SHA256SUMS hashes the other 29 uploaded assets and excludes itself",
+    "prepublication SLSA provenance attestations must verify for all 30 uploaded assets against the exact repository/workflow/source commit",
+    "prepublication SPDX SBOM attestations must verify for all 11 wheels",
+    "immutable releases must be enabled before draft/publish mutation",
+    "network timeout or unknown mutation result requires provider-state reconciliation before retry",
+    "wrong protected tag, wrong published release or ambiguous provider state is BLOCK",
+    "clean post-publication download must rerun sdist-derived InstalledImage/plugin-id parity and exact-wheel canaries before alpha exit",
+    "published immutable release is never repaired in place",
+    "GitHub-generated source archives are not ordinary uploaded release assets",
+    "attestations are provenance evidence, not security certification",
+    "PyPI remains outside alpha1 publication"
+  ],
+  "schema": "qcax.github.release-artifact-contract/2",
+  "uploaded_asset_count": 30,
+  "uploaded_groups": [
+    {
+      "count": 11,
+      "equivalence": "BYTE_EXACT",
+      "id": "WHEELS",
+      "pattern": "qcax_fabric_*.whl"
+    },
+    {
+      "count": 11,
+      "equivalence": "UNMODIFIED_BACKEND_BYTES_WITH_NORMALIZED_CONTENT_AND_INSTALLED_IMAGE_PARITY",
+      "id": "SDISTS",
+      "pattern": "qcax_fabric_*.tar.gz"
+    },
+    {
+      "count": 1,
+      "exact": "release-lock.json",
+      "id": "RELEASE_LOCK"
+    },
+    {
+      "count": 1,
+      "equivalence": "SPDX_2_3_SEMANTIC",
+      "exact": "sbom.spdx.json",
+      "id": "SBOM"
+    },
+    {
+      "count": 1,
+      "exact": "qcax-fabric-spec-v0.1.0-alpha.1.zip",
+      "id": "SPEC_BUNDLE"
+    },
+    {
+      "count": 1,
+      "exact": "qcax-fabric-conformance-v0.1.0-alpha.1.zip",
+      "id": "CONFORMANCE_BUNDLE"
+    },
+    {
+      "count": 1,
+      "exact": "RELEASE_NOTES-v0.1.0-alpha.1.md",
+      "id": "RELEASE_NOTES"
+    },
+    {
+      "count": 1,
+      "equivalence": "SOURCE_BUILD_SEMANTIC",
+      "exact": "qcax-release-provenance.json",
+      "id": "QCAX_PROVENANCE"
+    },
+    {
+      "count": 1,
+      "exact": "payload-manifest.json",
+      "id": "PAYLOAD_MANIFEST"
+    },
+    {
+      "count": 1,
+      "exact": "SHA256SUMS",
+      "id": "SHA256SUMS"
+    }
   ]
 }
