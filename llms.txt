@@ -1,0 +1,49 @@
+# QCAX Fabric — agent-readable repository index
+schema: qcax.agent-index/v1
+status: v0.1.0-alpha.1 candidate; publication is provider-evidence-bound
+
+# Start here
+PATH README.md
+PATH AGENTS.md
+PATH docs/FINAL_ARCHITECTURE.md
+PATH docs/PLUGIN_AUTHOR_GUIDE.md
+PATH docs/THREAT_MODEL.md
+PATH docs/INSTALLATION_IDENTITY.md
+PATH docs/COMPATIBILITY_POLICY.md
+PATH docs/NAMESPACE_POLICY.md
+
+# Normative public contracts
+PATH spec/plugin-descriptor-v1alpha1.schema.json
+PATH spec/artifact-envelope-v1alpha1.schema.json
+PATH spec/installation-receipt-v1alpha1.schema.json
+PATH spec/boot-lock-v1alpha1.schema.json
+PATH spec/release-lock-v1alpha1.schema.json
+
+# Release and repository-control contracts
+PATH github/RELEASE_ARTIFACT_CONTRACT.json
+PATH github/RELEASE_PROVIDER_STATE_MACHINE.json
+PATH github/ACTION_PIN_LEDGER.json
+PATH github/ALPHA1_EXIT_GATE.json
+PATH github/SETUP_RUNBOOK.md
+PATH release/RELEASE_NOTES-v0.1.0-alpha.1.md
+
+# Executable verification entrypoints
+PATH scripts/run_all.py
+PATH scripts/validate_repo.py
+PATH scripts/run_contract_conformance.py
+PATH scripts/run_mutations.py
+PATH scripts/verify_release_payload.py
+PATH tests/test_microkernel.py
+PATH tests/test_release_pipeline.py
+PATH tests/test_agent_entrypoints.py
+
+COMMAND python scripts/run_all.py
+
+# Current hard boundaries
+BOUNDARY tiny-host TCB: generic admission/identity/dependency/lifecycle/effects/events/BootLock only
+BOUNDARY authority-sensitive providers are SYSTEM_PINNED and exact-identity BootLock-bound
+BOUNDARY TRUSTED_IN_PROCESS is the only implemented alpha1 execution mode
+BOUNDARY DURABLE events are reserved but unsupported in alpha1
+BOUNDARY adapters/ and profiles/ are plans unless explicit executable evidence says otherwise
+BOUNDARY release requires guarded final-main PREFLIGHT then PUBLISH plus postpublication verification
+BOUNDARY PyPI, external-adapter conformance, untrusted-plugin sandboxing, production readiness, security certification, formal proof, and independent review are not implied by this source tree
