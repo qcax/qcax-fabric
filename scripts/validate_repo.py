@@ -79,7 +79,7 @@ ok('DURABLE events are reserved but unsupported in alpha1' in readme,'README ove
 
 # REPO_TREE parity excluding itself
 tree=ROOT/'github/REPO_TREE.txt'
-actual=sorted(p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*') if p.is_file() and p!=tree)
+actual=sorted(p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*') if p.is_file() and p!=tree and '.git' not in p.relative_to(ROOT).parts)
 expected=[x for x in tree.read_text(encoding='utf-8').splitlines() if x.strip()] if tree.exists() else []
 ok(expected==actual,'github/REPO_TREE.txt stale')
 print(json.dumps({'status':'PASS' if not errors else 'FAIL','checks':checks,'errors':errors},sort_keys=True)); sys.exit(1 if errors else 0)
