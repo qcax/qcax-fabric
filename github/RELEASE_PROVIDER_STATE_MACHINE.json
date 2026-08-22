@@ -1,0 +1,32 @@
+{
+  "concurrency": {
+    "cancel_in_progress": false,
+    "group": "qcax-release-<release-tag>",
+    "queue": "max",
+    "tag_replay": "queued and mutation-free with respect to tag/release/assets"
+  },
+  "recovery": {
+    "asset_upload_timeout": "GET exact asset list; accept exact digest, otherwise delete only mismatched draft asset by id then retry once",
+    "create_draft_timeout": "GET release by tag; resume exact draft, verify exact immutable release, or BLOCK",
+    "duplicate_publish": "existing exact immutable release -> VERIFY_ONLY; never republish",
+    "publish_timeout": "GET release by tag; if exact immutable -> VERIFY_ONLY; if exact draft -> retry publish; otherwise BLOCK",
+    "wrong_published_release": "BLOCK; immutable release is not repaired in place",
+    "wrong_tag": "BLOCK; never move protected tag in normal release flow"
+  },
+  "release": "v0.1.0-alpha.1",
+  "schema": "qcax.github.release-provider-state-machine/1",
+  "source": "exact final main commit",
+  "states": [
+    "SOURCE_FROZEN",
+    "PATCH_GREEN",
+    "FINAL_MAIN_GREEN",
+    "PREFLIGHT_VALID",
+    "ATTESTATIONS_VERIFIED",
+    "DRAFT_EXACT",
+    "ASSETS_EXACT",
+    "PUBLISHED_IMMUTABLE_EXACT",
+    "POSTVERIFY_PASS",
+    "TAG_REPLAY_PASS",
+    "ALPHA_EXIT"
+  ]
+}

@@ -1,100 +1,224 @@
 name: release-build
+
 on:
-  push:
-    tags: ["v*"]
   workflow_dispatch:
     inputs:
+      mode:
+        description: "Release operation"
+        required: true
+        type: choice
+        options:
+          - PREFLIGHT
+          - PUBLISH
       release_tag:
-        description: "Release tag identity used for prebuild lock generation"
+        description: "Exact release identity"
         required: true
         default: "v0.1.0-alpha.1"
+      expected_commit:
+        description: "Exact 40-hex main commit frozen for this release"
+        required: true
+      preflight_run_id:
+        description: "Required for PUBLISH"
+        required: false
+      confirmation:
+        description: "Required for PUBLISH: PUBLISH-v0.1.0-alpha.1"
+        required: false
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: qcax-release-${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+  queue: max
+
 permissions:
   contents: read
+
 jobs:
-  build:
+  preflight:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'PREFLIGHT'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7 observed 2026-08-22
         with:
           python-version: "3.13"
-      - run: python -m pip install -r requirements/test.txt
-      - run: python scripts/run_all.py
-      - name: Build reproducible standard wheels
-        run: python scripts/run_standard_build_repro.py wheelhouse
-      - name: Generate exact-artifact release lock
-        env:
-          QCAX_RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
-        run: python scripts/generate_release_lock.py wheelhouse release-lock.json "$QCAX_RELEASE_TAG"
-      - name: Prepare exact wheel contents for SBOM scan
+      - name: Assert exact preflight source
+        shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import shutil, zipfile
-          src=Path('wheelhouse')
-          dst=Path('sbom-root')
-          if dst.exists(): shutil.rmtree(dst)
-          dst.mkdir()
-          wheels=sorted(src.glob('*.whl'))
-          if not wheels: raise SystemExit('no wheels for SBOM scan')
-          for wheel in wheels:
-              out=dst/wheel.stem
-              out.mkdir()
-              with zipfile.ZipFile(wheel) as z:
-                  z.extractall(out)
-          print(f'prepared {len(wheels)} wheels for SBOM scan')
-          PY
+          set -euo pipefail
+          test "${{ inputs.release_tag }}" = "v0.1.0-alpha.1"
+          [[ "${{ inputs.expected_commit }}" =~ ^[0-9a-f]{40}$ ]]
+          test "${GITHUB_REF}" = "refs/heads/main"
+          test "${GITHUB_SHA}" = "${{ inputs.expected_commit }}"
+      - run: python -m pip install -r requirements/test.txt -r requirements/release.txt
+      - name: Full repository assurance
+        run: python scripts/run_all.py
+      - name: Build package/control payload before SBOM
+        env:
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/build_release_candidate.py --out release-assets --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Secure exact-wheel canary
+        run: python scripts/run_secure_installed_canary.py release-assets
+      - name: Out-of-tree plugin canary
+        run: python scripts/run_out_of_tree_canary.py release-assets
+      - name: Prepare exact wheel contents for SBOM scan
+        run: python scripts/prepare_release_sbom_root.py release-assets sbom-root
       - name: Generate SPDX JSON SBOM
         uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0 observed 2026-08-22
         with:
           path: sbom-root
           format: spdx-json
-          output-file: sbom.spdx.json
+          output-file: release-assets/sbom.spdx.json
           upload-artifact: false
           upload-release-assets: false
           dependency-snapshot: false
-      - name: Validate release SBOM coverage
-        run: |
-          python - <<'PY'
-          import json,re
-          from pathlib import Path
-          lock=json.loads(Path('release-lock.json').read_text(encoding='utf-8'))
-          sbom=json.loads(Path('sbom.spdx.json').read_text(encoding='utf-8'))
-          if sbom.get('spdxVersion')!='SPDX-2.3': raise SystemExit('unexpected SPDX version')
-          norm=lambda s: re.sub(r'[-_.]+','-',s).lower()
-          expected={norm(e['distribution_name']) for e in lock['entries']}
-          observed={norm(p.get('name','')) for p in sbom.get('packages',[]) if p.get('name')}
-          missing=sorted(expected-observed)
-          if missing: raise SystemExit(f'SBOM missing release distributions: {missing}')
-          print(json.dumps({'status':'PASS','expected_distributions':len(expected),'observed_packages':len(observed),'missing':missing},sort_keys=True))
-          PY
+      - name: Finalize exact 30-asset payload
+        env:
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/finalize_release_payload.py release-assets --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Verify complete release payload
+        env:
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/verify_release_payload.py release-assets --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Generate build-provenance attestation for all 30 uploaded assets
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1 observed/verified 2026-08-22
+        with:
+          subject-path: release-assets/*
+      - name: Generate SPDX SBOM attestation for exact release wheels
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1 observed/verified 2026-08-22
+        with:
+          subject-path: release-assets/*.whl
+          sbom-path: release-assets/sbom.spdx.json
+      - name: Verify prepublication attestations
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/verify_preflight_attestations.py release-assets --repo "$GITHUB_REPOSITORY" --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
-          name: release-wheels
-          path: |
-            wheelhouse/*.whl
-            release-lock.json
-            sbom.spdx.json
+          name: release-candidate-v0.1.0-alpha.1
+          path: release-assets/*
           if-no-files-found: error
-  attest-build:
-    if: github.ref_type == 'tag'
-    needs: build
+          retention-days: 30
+
+  publish:
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'PUBLISH'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
-      id-token: write
-      attestations: write
-      contents: read
+      contents: write
+      attestations: read
     steps:
-      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          name: release-wheels
-          path: release-assets
-      - uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7 observed 2026-08-22
         with:
-          subject-path: release-assets/wheelhouse/*.whl
-      - uses: actions/attest-sbom@4651f806c01d8637787e274ac3bdf724ef169f34 # v3
+          python-version: "3.13"
+      - name: Assert guarded publish request
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ inputs.release_tag }}" = "v0.1.0-alpha.1"
+          test "${{ inputs.confirmation }}" = "PUBLISH-v0.1.0-alpha.1"
+          [[ "${{ inputs.expected_commit }}" =~ ^[0-9a-f]{40}$ ]]
+          [[ "${{ inputs.preflight_run_id }}" =~ ^[0-9]+$ ]]
+          test "${GITHUB_REF}" = "refs/heads/main"
+          test "${GITHUB_SHA}" = "${{ inputs.expected_commit }}"
+      - run: python -m pip install -r requirements/test.txt -r requirements/release.txt
+      - name: Reconcile provider prestate and download exact preflight payload
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+          QCAX_PREFLIGHT_RUN_ID: ${{ inputs.preflight_run_id }}
+        run: python scripts/reconcile_release_prestate.py --download release-assets --repo "$GITHUB_REPOSITORY" --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT" --run-id "$QCAX_PREFLIGHT_RUN_ID"
+      - name: Reverify exact payload
+        env:
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/verify_release_payload.py release-assets --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Reverify prepublication attestations
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/verify_preflight_attestations.py release-assets --repo "$GITHUB_REPOSITORY" --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Re-run exact-wheel canaries before irreversible publish
+        run: |
+          python scripts/run_secure_installed_canary.py release-assets
+          python scripts/run_out_of_tree_canary.py release-assets
+      - name: Draft/resume/upload/publish once with provider reconciliation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/publish_immutable_release.py release-assets --repo "$GITHUB_REPOSITORY" --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Verify immutable release, assets and clean downloaded install
+        env:
+          GH_TOKEN: ${{ github.token }}
+          QCAX_RELEASE_TAG: ${{ inputs.release_tag }}
+          QCAX_EXPECTED_COMMIT: ${{ inputs.expected_commit }}
+        run: python scripts/verify_published_release.py release-assets --repo "$GITHUB_REPOSITORY" --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+
+  tag-replay:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      attestations: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          subject-path: release-assets/wheelhouse/*.whl
-          sbom-path: release-assets/sbom.spdx.json
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7 observed 2026-08-22
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r requirements/test.txt -r requirements/release.txt
+      - name: Require exact published immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/wait_for_immutable_release.py "$GITHUB_REF_NAME" "$GITHUB_SHA"
+      - name: Full assurance from exact tag checkout
+        run: python scripts/run_all.py
+      - name: Rebuild package/control payload from exact tag
+        env:
+          QCAX_RELEASE_TAG: ${{ github.ref_name }}
+          QCAX_EXPECTED_COMMIT: ${{ github.sha }}
+        run: python scripts/build_release_candidate.py --out release-assets --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Prepare replay SBOM root
+        run: python scripts/prepare_release_sbom_root.py release-assets sbom-root
+      - name: Generate replay SPDX JSON SBOM
+        uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0 observed 2026-08-22
+        with:
+          path: sbom-root
+          format: spdx-json
+          output-file: release-assets/sbom.spdx.json
+          upload-artifact: false
+          upload-release-assets: false
+          dependency-snapshot: false
+      - name: Finalize and verify replay payload
+        env:
+          QCAX_RELEASE_TAG: ${{ github.ref_name }}
+          QCAX_EXPECTED_COMMIT: ${{ github.sha }}
+        run: |
+          python scripts/finalize_release_payload.py release-assets --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+          python scripts/verify_release_payload.py release-assets --tag "$QCAX_RELEASE_TAG" --commit "$QCAX_EXPECTED_COMMIT"
+      - name: Compare class-aware deterministic/semantic replay to immutable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/tag_replay_verify.py release-assets --repo "$GITHUB_REPOSITORY" --tag "$GITHUB_REF_NAME" --commit "$GITHUB_SHA"
