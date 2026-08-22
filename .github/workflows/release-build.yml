@@ -28,15 +28,48 @@ jobs:
         env:
           QCAX_RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
         run: python scripts/generate_release_lock.py wheelhouse release-lock.json "$QCAX_RELEASE_TAG"
+      - name: Prepare exact wheel contents for SBOM scan
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil, zipfile
+          src=Path('wheelhouse')
+          dst=Path('sbom-root')
+          if dst.exists(): shutil.rmtree(dst)
+          dst.mkdir()
+          wheels=sorted(src.glob('*.whl'))
+          if not wheels: raise SystemExit('no wheels for SBOM scan')
+          for wheel in wheels:
+              out=dst/wheel.stem
+              out.mkdir()
+              with zipfile.ZipFile(wheel) as z:
+                  z.extractall(out)
+          print(f'prepared {len(wheels)} wheels for SBOM scan')
+          PY
       - name: Generate SPDX JSON SBOM
         uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0 observed 2026-08-22
         with:
-          path: wheelhouse
+          path: sbom-root
           format: spdx-json
           output-file: sbom.spdx.json
           upload-artifact: false
           upload-release-assets: false
           dependency-snapshot: false
+      - name: Validate release SBOM coverage
+        run: |
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          lock=json.loads(Path('release-lock.json').read_text(encoding='utf-8'))
+          sbom=json.loads(Path('sbom.spdx.json').read_text(encoding='utf-8'))
+          if sbom.get('spdxVersion')!='SPDX-2.3': raise SystemExit('unexpected SPDX version')
+          norm=lambda s: re.sub(r'[-_.]+','-',s).lower()
+          expected={norm(e['distribution_name']) for e in lock['entries']}
+          observed={norm(p.get('name','')) for p in sbom.get('packages',[]) if p.get('name')}
+          missing=sorted(expected-observed)
+          if missing: raise SystemExit(f'SBOM missing release distributions: {missing}')
+          print(json.dumps({'status':'PASS','expected_distributions':len(expected),'observed_packages':len(observed),'missing':missing},sort_keys=True))
+          PY
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: release-wheels
