@@ -16,7 +16,10 @@ REQUIRED_AGENT_PATHS = (
     "llms.txt",
 )
 
-REQUIRED_INDEX_PATHS = REQUIRED_AGENT_PATHS + (
+REQUIRED_INDEX_PATHS = tuple(
+    rel for rel in REQUIRED_AGENT_PATHS if rel != "llms.txt"
+) + (
+    "AGENTS.md",
     "docs/INSTALLATION_IDENTITY.md",
     "docs/COMPATIBILITY_POLICY.md",
     "docs/NAMESPACE_POLICY.md",
