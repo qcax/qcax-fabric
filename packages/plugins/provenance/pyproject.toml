@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "qcax-fabric-plugin-provenance"
+version = "0.1.0a1"
+description = "QCAX Fabric plugin: provenance"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+dependencies = ["qcax-fabric-contracts==0.1.0a1", "qcax-fabric-sdk==0.1.0a1"]
+[project.entry-points."qcax.fabric.plugins"]
+provenance = "qcax_plugin_provenance:definition"
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+[tool.setuptools.packages.find]
+where = ["src"]
+[tool.setuptools.package-data]
+"qcax_plugin_provenance" = ["qcax-plugin.json"]

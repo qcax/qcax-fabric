@@ -1,0 +1,5 @@
+{
+  "profile_id": "research",
+  "rule": "may compose plugins/adapters; may not change host TCB or inherit cross-profile execution credit",
+  "status": "ISOLATED_APPLICATION_PROFILE"
+}

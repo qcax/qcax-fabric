@@ -1,0 +1,21 @@
+{
+  "attestation_lanes": [
+    "GitHub build provenance attestation",
+    "GitHub immutable release attestation",
+    "PyPI PEP 740 digital attestations"
+  ],
+  "boundary": "These attestations prove provenance/signing properties, not software security.",
+  "preconditions": [
+    "package name availability/ownership verified",
+    "GitHub immutable alpha passes",
+    "pypi environment configured",
+    "Trusted Publisher exact owner/repo/workflow/environment configured"
+  ],
+  "schema": "qcax.github.pypi-plan/1",
+  "status": "SEPARATE_POST_GITHUB_ALPHA_GATE",
+  "version_mapping": {
+    "pep440": "0.1.0a1",
+    "semver_tag": "v0.1.0-alpha.1"
+  },
+  "workflow_law": "build job has no OIDC publish authority; publish job downloads prebuilt artifacts and uses OIDC/id-token:write; no long-lived PyPI token"
+}

@@ -1,0 +1,72 @@
+{
+  "$id": "https://qcax.dev/schemas/installation-receipt-v1alpha1.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "distribution_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "distribution_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "installed_image_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "occurrence_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "record_verified": {
+      "const": true
+    },
+    "schema": {
+      "const": "qcax.installation-receipt/v1alpha1"
+    },
+    "site_root": {
+      "type": "string"
+    },
+    "source_locator": {
+      "type": "string"
+    },
+    "verified_bytes": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "verified_record_entries": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "wheel_filename": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "wheel_sha256": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "distribution_name",
+    "distribution_version",
+    "installed_image_sha256",
+    "record_verified",
+    "verified_record_entries",
+    "verified_bytes",
+    "occurrence_id",
+    "site_root"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,12 @@
+[project]
+name = "qcax-fabric-repository"
+version = "0.1.0a1"
+description = "QCAX Fabric monorepo metadata; packages are built independently"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+
+[tool.qcax]
+public_semver = "0.1.0-alpha.1"
+plugin_api = "qcax.fabric/v1alpha1"
+entry_point_group = "qcax.fabric.plugins"

@@ -1,0 +1,36 @@
+{
+  "$id": "urn:qcax:schema:boot-lock:v1alpha1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "QCAX BootLock v1alpha1",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "lockedProvider": {
+      "type":"object","additionalProperties":false,
+      "properties": {
+        "capability_prefix":{"type":"string","minLength":1},
+        "plugin_id":{"type":"string","pattern":"^[a-z0-9][a-z0-9._-]*$"},
+        "artifact_sha256":{"$ref":"#/$defs/sha256"}
+      },
+      "required":["capability_prefix","plugin_id","artifact_sha256"]
+    },
+    "trustedArtifact": {
+      "type":"object","additionalProperties":false,
+      "properties": {
+        "plugin_id":{"type":"string","pattern":"^[a-z0-9][a-z0-9._-]*$"},
+        "artifact_sha256":{"$ref":"#/$defs/sha256"}
+      },
+      "required":["plugin_id","artifact_sha256"]
+    }
+  },
+  "properties": {
+    "target":{"type":"string"},
+    "claim_ceiling":{"type":"string"},
+    "locked_providers":{"type":"array","items":{"$ref":"#/$defs/lockedProvider"}},
+    "trusted_in_process_artifacts":{"type":"array","items":{"$ref":"#/$defs/trustedArtifact"}},
+    "external_mutation_authorized":{"type":"boolean"},
+    "generation_label":{"type":"string"}
+  },
+  "required":["target","claim_ceiling","locked_providers","trusted_in_process_artifacts","external_mutation_authorized","generation_label"]
+}

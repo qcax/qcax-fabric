@@ -1,0 +1,16 @@
+{
+  "adapter": "temporal",
+  "boundary": "durable-service profile; operator-cost gate",
+  "mechanism": "deterministic controller / nondeterministic activity separation",
+  "phase": "ALPHA2_REAL_CANARY",
+  "required_tests": [
+    "public contract mapping",
+    "identity/provenance preservation",
+    "guard preservation",
+    "rollback/failure isolation",
+    "heldout conformance vectors",
+    "operator cost"
+  ],
+  "source_family": "Temporal",
+  "status": "NOT_IMPLEMENTED_NOT_CLAIMED"
+}

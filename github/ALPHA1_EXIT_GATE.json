@@ -1,0 +1,33 @@
+{
+  "claim": "working public plugin-development base, not production-ready or security-certified",
+  "mandatory": [
+    "public qcax/qcax-fabric repo exists with exact reviewed tree",
+    "main protected by active solo-safe ruleset after check names observed",
+    "enabled workflows use fresh full-SHA action pins",
+    "four OS/Python CI jobs pass from clean checkout",
+    "installed-wheel/import-boundary/semantic-mutation conformance passes",
+    "dependency-review gate passes",
+    "security baseline settings recorded",
+    "SYSTEM_PINNED exact installed-image BootLock canary passes",
+    "immutable prerelease published only after all assets attached",
+    "release and every asset verify after publication",
+    "clean install from GitHub release assets passes out-of-tree canary",
+    "verifier-issued InstallationReceipt/AdmissionTicket path is mandatory; raw PluginEnvelope admission rejected",
+    "JSON Schema/Python descriptor conformance vectors pass with zero parity failures",
+    "strict SemVer boundary vectors pass",
+    "BootLock generation identity is order-invariant",
+    "event handler failures emit deterministic ERROR receipts before propagation",
+    "DURABLE events remain rejected until event-store conformance exists",
+    "release lock is generated from the exact standard wheels attached to the release",
+    "detached post-state + generation-fence receipt exists"
+  ],
+  "not_required_for_alpha1": [
+    "PyPI publication",
+    "real external Cordis/Inspect/LangGraph adapter",
+    "SANDBOXED_PROCESS",
+    "independent external security review"
+  ],
+  "package_version": "0.1.0a1",
+  "schema": "qcax.github.alpha1-exit/1",
+  "tag": "v0.1.0-alpha.1"
+}

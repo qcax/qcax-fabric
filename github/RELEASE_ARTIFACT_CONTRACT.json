@@ -1,0 +1,27 @@
+{
+  "artifacts": [
+    "source archive from GitHub",
+    "qcax-fabric-contracts wheel+sdist",
+    "qcax-fabric-sdk wheel+sdist",
+    "qcax-fabric-host wheel+sdist",
+    "first-party plugin wheels+sdists",
+    "JSON Schema contract bundle",
+    "conformance vectors/results",
+    "SBOM",
+    "GitHub artifact attestations",
+    "release notes/migration notes",
+    "QCAX detached manifest/provenance receipt",
+    "release-lock.json generated from exact attached standard wheels"
+  ],
+  "release": "v0.1.0-alpha.1",
+  "rules": [
+    "all hashes tied to exact tag commit",
+    "attestation is provenance evidence, not security correctness",
+    "no long-lived PyPI token",
+    "no mutable action tags in enabled workflows",
+    "release remains prerelease until beta gates",
+    "release wheel builder is the standard setuptools/pip reproducibility path, not the QCAX reference builder",
+    "InstalledImage BootLock values are reconstructed from the exact release wheels before publication",
+    "raw PluginEnvelope objects are not executable admission capabilities"
+  ]
+}

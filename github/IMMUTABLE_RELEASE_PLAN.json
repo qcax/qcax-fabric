@@ -1,0 +1,20 @@
+{
+  "forbidden": [
+    "publish then add/replace assets",
+    "retag published immutable release",
+    "treat attestation as security proof"
+  ],
+  "hard_gate": true,
+  "schema": "qcax.github.immutable-release/1",
+  "sequence": [
+    "create draft release at exact commit",
+    "attach all final assets",
+    "compare asset list to release contract",
+    "enable/confirm immutable release setting",
+    "publish once",
+    "verify release attestation",
+    "verify every asset against release",
+    "run clean install canary"
+  ],
+  "tag": "v0.1.0-alpha.1"
+}

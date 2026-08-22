@@ -1,0 +1,657 @@
+{
+  "note": "Execution classes are capability boundaries, not authority. Every external mutation still needs explicit task-local authorization at execution time.",
+  "schema": "qcax.github.setup-checklist/2",
+  "step_count": 58,
+  "steps": [
+    {
+      "action": "Capture explicit task-local authorization for qcax/qcax-fabric creation/mutation and intended public visibility.",
+      "depends_on": [],
+      "executor": "USER_MANUAL_REQUIRED",
+      "id": "GH00",
+      "phase": "AUTH",
+      "required_evidence": "current user authorization",
+      "status": "BLOCKED_CURRENT"
+    },
+    {
+      "action": "Recheck global/installed repositories for exact qcax/qcax-fabric name immediately before creation.",
+      "depends_on": [
+        "GH00"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH01",
+      "notes": "Search itself can run before creation; class indicates connector-executable task. If repo still absent, continue.",
+      "phase": "PRESTATE",
+      "required_evidence": "search receipt showing exact collision state",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Create public qcax/qcax-fabric with only a minimal README so main exists; do not auto-add license/gitignore.",
+      "depends_on": [
+        "GH01"
+      ],
+      "executor": "USER_MANUAL_REQUIRED",
+      "id": "GH02",
+      "phase": "CREATE",
+      "required_evidence": "repo id/url/visibility/default branch",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Read repository metadata and main head; verify owner=qcax, visibility=public, no unexpected starter files.",
+      "depends_on": [
+        "GH02"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH03",
+      "phase": "PRESTATE",
+      "required_evidence": "repo snapshot + main SHA",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Create bootstrap/v0.1.0-alpha.1 from main.",
+      "depends_on": [
+        "GH03"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH04",
+      "phase": "BOOTSTRAP",
+      "required_evidence": "branch ref",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Upload the exact reviewed R4.4 repo tree as one atomic tree/commit on bootstrap branch.",
+      "depends_on": [
+        "GH04"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH05",
+      "phase": "BOOTSTRAP",
+      "required_evidence": "commit SHA + tree manifest parity",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Open draft bootstrap PR to main and record exact head/base SHAs.",
+      "depends_on": [
+        "GH05"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH06",
+      "phase": "BOOTSTRAP",
+      "required_evidence": "PR number + SHAs",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Re-resolve every enabled workflow action tag/ref to a current full commit SHA and compare to ACTION_PIN_LEDGER.",
+      "depends_on": [
+        "GH06"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH07",
+      "phase": "ACTIONS",
+      "required_evidence": "fresh action pin ledger",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Patch workflows-ready pins only when fresh resolution differs; run local workflow/static validation.",
+      "depends_on": [
+        "GH07"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH08",
+      "phase": "ACTIONS",
+      "required_evidence": "commit SHA + validator receipt",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Copy reviewed ci/conformance/dependency-review workflows into .github/workflows on bootstrap branch.",
+      "depends_on": [
+        "GH08"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH09",
+      "phase": "CI",
+      "required_evidence": "workflow file SHAs",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Observe bootstrap PR Actions runs and required check context names; do not invent ruleset checks before they exist.",
+      "depends_on": [
+        "GH09"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH10",
+      "phase": "CI",
+      "required_evidence": "workflow run/job/check receipts",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Patch only demonstrated CI portability defects; rerun affected jobs until passing or exact blocker.",
+      "depends_on": [
+        "GH10"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH11",
+      "phase": "CI",
+      "required_evidence": "passing runs or blocker ledger",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Set squash-only merge and auto-delete head branches; disable merge commits and rebase merge for a single canonical history.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH12",
+      "phase": "GENERAL",
+      "required_evidence": "settings readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable Issues; disable Wiki; enable Discussions only after bootstrap if useful; set description/topics.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH13",
+      "phase": "GENERAL",
+      "required_evidence": "metadata/settings readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable dependency graph, Dependabot alerts, and security updates.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH14",
+      "phase": "SECURITY",
+      "required_evidence": "security settings readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable private vulnerability reporting.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH15",
+      "phase": "SECURITY",
+      "required_evidence": "security settings readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable secret scanning and push protection when available for this public repository/account.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH16",
+      "phase": "SECURITY",
+      "required_evidence": "security settings readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable CodeQL default setup; use advanced workflow only if later custom queries/build needs justify it.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH17",
+      "phase": "SECURITY",
+      "required_evidence": "CodeQL configuration + first analysis result",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Set default workflow token permissions to read-only and disable Actions ability to approve PRs.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH18",
+      "phase": "ACTIONS",
+      "required_evidence": "Actions permission readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Restrict allowed Actions to GitHub-owned plus reviewed full-SHA third-party actions; do not allow mutable tags in enabled workflows.",
+      "depends_on": [
+        "GH11"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH19",
+      "phase": "ACTIONS",
+      "required_evidence": "Actions policy readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Create main ruleset in Evaluate mode using the observed check names; 0 approvals during solo-maintainer bootstrap.",
+      "depends_on": [
+        "GH10",
+        "GH12"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH20",
+      "phase": "RULESET",
+      "required_evidence": "ruleset id/config/evaluation evidence",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Main rules: require PR, required checks, conversation resolution, linear history; block deletion and force push; no routine bypass.",
+      "depends_on": [
+        "GH20"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH21",
+      "phase": "RULESET",
+      "required_evidence": "ruleset post-state",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Promote main ruleset from Evaluate to Active only after bootstrap checks are stable.",
+      "depends_on": [
+        "GH21"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH22",
+      "phase": "RULESET",
+      "required_evidence": "active ruleset readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Create v* tag ruleset that restricts update/deletion and reserves creation to maintainers/release flow.",
+      "depends_on": [
+        "GH22"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH23",
+      "phase": "RULESET",
+      "required_evidence": "tag ruleset id/config",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Install CODEOWNERS with @qcax for routing only; do not call it independent review.",
+      "depends_on": [
+        "GH22"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH24",
+      "phase": "CONTRIB",
+      "required_evidence": "CODEOWNERS commit + ownership validation",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Verify issue forms, PR template, SECURITY, CONTRIBUTING, GOVERNANCE, SUPPORT, CODE_OF_CONDUCT, CITATION, LICENSE/NOTICE on PR.",
+      "depends_on": [
+        "GH24"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH25",
+      "phase": "CONTRIB",
+      "required_evidence": "file/readback receipt",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable exact-pinned dependency review gate with fail-on-severity=high; defer strict licence allowlist until live dependency metadata proves it safe.",
+      "depends_on": [
+        "GH07",
+        "GH14"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH26",
+      "phase": "CI",
+      "required_evidence": "workflow run",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable exact-pinned OpenSSF Scorecard scheduled/main workflow after public bootstrap; upload SARIF only with minimal required permissions.",
+      "depends_on": [
+        "GH07",
+        "GH22"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH27",
+      "phase": "CI",
+      "required_evidence": "Scorecard run + score, no certification claim",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Review bootstrap PR diff, CI, dependency review, security results, and source-manifest parity; record go/no-go.",
+      "depends_on": [
+        "GH11",
+        "GH22",
+        "GH25",
+        "GH26"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH28",
+      "phase": "BOOTSTRAP",
+      "required_evidence": "promotion gate receipt",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Merge bootstrap PR only if gate passes and exact head SHA has not moved.",
+      "depends_on": [
+        "GH28"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH29",
+      "phase": "BOOTSTRAP",
+      "required_evidence": "merge SHA",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Read main tree/commit and verify exact reviewed files, hashes, enabled workflows, and no unexpected mutation.",
+      "depends_on": [
+        "GH29"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH30",
+      "phase": "POSTSTATE",
+      "required_evidence": "post-merge tree manifest",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Verify v0.1.0-alpha.1 tag does not exist and re-run full main CI from clean checkout.",
+      "depends_on": [
+        "GH30"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH31",
+      "phase": "RELEASE_PRESTATE",
+      "required_evidence": "tag absence + clean CI run",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Build wheels, schemas, base lock manifest, conformance bundle and checksums in unprivileged release-build job from exact commit.",
+      "depends_on": [
+        "GH31"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH32",
+      "phase": "RELEASE",
+      "required_evidence": "artifact hashes + build job",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Generate SPDX SBOM using recorded tool/spec and validate it; keep SBOM separate from security certification.",
+      "depends_on": [
+        "GH32"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH33",
+      "phase": "RELEASE",
+      "required_evidence": "SBOM + validation receipt",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Generate GitHub build provenance attestations for release artifacts and verify them.",
+      "depends_on": [
+        "GH32"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH34",
+      "phase": "RELEASE",
+      "required_evidence": "attestation ids + verification output",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Create draft GitHub prerelease v0.1.0-alpha.1 from exact main commit.",
+      "depends_on": [
+        "GH32",
+        "GH33",
+        "GH34"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH35",
+      "phase": "RELEASE",
+      "required_evidence": "draft release id/tag/target SHA",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Attach every final asset before publication: wheels, lock manifest, schemas, conformance bundle, SBOM, hashes, source archive/receipts.",
+      "depends_on": [
+        "GH35"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH36",
+      "phase": "RELEASE",
+      "required_evidence": "asset list + hashes",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable/confirm immutable release semantics before publication; immutable release is an alpha exit gate, not optional.",
+      "depends_on": [
+        "GH36"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH37",
+      "phase": "RELEASE",
+      "required_evidence": "repository/release setting readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Publish immutable prerelease only after asset completeness gate; then verify release and every asset.",
+      "depends_on": [
+        "GH37"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH38",
+      "phase": "RELEASE",
+      "required_evidence": "published immutable release + gh release verify/verify-asset outputs",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Install alpha assets into clean environment using release lock; recompute InstalledImageIdentity and run out-of-tree plugin canary.",
+      "depends_on": [
+        "GH38"
+      ],
+      "executor": "LOCAL_PREPUBLICATION",
+      "id": "GH39",
+      "phase": "CANARY",
+      "required_evidence": "post-release clean install receipt",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Check availability/ownership of all intended PyPI distribution names before creating Trusted Publishers.",
+      "depends_on": [
+        "GH38"
+      ],
+      "executor": "PYPI_MANUAL_OR_EXTERNAL",
+      "id": "GH40",
+      "phase": "PYPI_PRESTATE",
+      "required_evidence": "namespace availability/ownership ledger",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Create protected GitHub pypi environment with no long-lived API token; require approval only where platform/account makes it non-deadlocking.",
+      "depends_on": [
+        "GH40"
+      ],
+      "executor": "GITHUB_UI_OR_EXTERNAL_API_REQUIRED",
+      "id": "GH41",
+      "phase": "PYPI",
+      "required_evidence": "environment readback",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Configure PyPI Trusted Publisher for exact owner/repo/workflow/environment and package names.",
+      "depends_on": [
+        "GH41"
+      ],
+      "executor": "PYPI_MANUAL_OR_EXTERNAL",
+      "id": "GH42",
+      "phase": "PYPI",
+      "required_evidence": "publisher configuration",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Enable exact-pinned PyPI publish workflow; publishing job only downloads prebuilt release artifacts and publishes with OIDC.",
+      "depends_on": [
+        "GH07",
+        "GH42"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH43",
+      "phase": "PYPI",
+      "required_evidence": "workflow commit + protected config",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Publish PEP 440 0.1.0a1 packages only after immutable GitHub alpha passes; record PyPI file hashes and PEP 740 attestations.",
+      "depends_on": [
+        "GH38",
+        "GH43"
+      ],
+      "executor": "PYPI_MANUAL_OR_EXTERNAL",
+      "id": "GH44",
+      "phase": "PYPI",
+      "required_evidence": "PyPI project/version/files/attestations",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Install published packages in clean environment, verify release-lock/InstalledImageIdentity, and rerun conformance/out-of-tree canary.",
+      "depends_on": [
+        "GH44"
+      ],
+      "executor": "LOCAL_PREPUBLICATION",
+      "id": "GH45",
+      "phase": "PYPI_CANARY",
+      "required_evidence": "PyPI post-publish canary receipt",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Pin and implement real Inspect adapter against public QCAX contracts without host imports.",
+      "depends_on": [
+        "GH38"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH46",
+      "phase": "ADAPTER",
+      "required_evidence": "adapter package + pinned source/version + conformance",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Pin and implement real Cordis or LangGraph adapter as structurally different second canary.",
+      "depends_on": [
+        "GH38"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH47",
+      "phase": "ADAPTER",
+      "required_evidence": "adapter package + pinned source/version + conformance",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Run shared held-out protocol suite and measure portability/operator cost; keep external failures separate from core failures.",
+      "depends_on": [
+        "GH46",
+        "GH47"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH48",
+      "phase": "ADAPTER",
+      "required_evidence": "held-out adapter comparison",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Implement SANDBOXED_PROCESS execution mode before admitting untrusted plugins; do not treat in-process permissions as isolation.",
+      "depends_on": [
+        "GH38"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH49",
+      "phase": "SANDBOX",
+      "required_evidence": "sandbox threat model + escape/IPC/cancellation tests",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Migrate remaining first-party systems in waves behind contracts; prohibit host special-cases and cross-plugin implementation imports.",
+      "depends_on": [
+        "GH38"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH50",
+      "phase": "MIGRATION",
+      "required_evidence": "wave receipts + package-boundary tests",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Promote application profiles only after their required plugins/adapters have independent evidence; preserve target isolation.",
+      "depends_on": [
+        "GH50"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH51",
+      "phase": "MIGRATION",
+      "required_evidence": "profile conformance receipts",
+      "status": "PLANNED"
+    },
+    {
+      "action": "When a second eligible maintainer exists, raise critical-path approval requirement to >=1 independent/code-owner review.",
+      "depends_on": [
+        "GH22"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH52",
+      "phase": "MAINTAINER",
+      "required_evidence": "reviewer availability + ruleset change",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Run periodic action-pin revalidation/Dependabot github-actions updates; do not assume SHA refs automatically receive all vulnerability alerts.",
+      "depends_on": [
+        "GH29"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH53",
+      "phase": "SUPPLY_CHAIN",
+      "required_evidence": "scheduled pin review/PR evidence",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Record final repository/settings/rulesets/workflows/release/package/attestation state in detached evidence ledger.",
+      "depends_on": [
+        "GH38"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH54",
+      "phase": "POSTSTATE",
+      "required_evidence": "detached post-state ledger",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Apply R31 generation fence: absorb predecessor publication evidence once; do not let own release create an automatic successor.",
+      "depends_on": [
+        "GH54"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH55",
+      "phase": "GENERATION",
+      "required_evidence": "generation-fence receipt",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Reopen affected partitions only on independent evidence, validation failure, source/version drift, provider capability change, or explicit user objective change.",
+      "depends_on": [
+        "GH55"
+      ],
+      "executor": "CONDITIONAL_FUTURE",
+      "id": "GH56",
+      "phase": "REOPEN",
+      "required_evidence": "reopen event",
+      "status": "PLANNED"
+    },
+    {
+      "action": "Declare v0.1.0-alpha.1 working GitHub base only when mandatory GitHub alpha gates are actually evidenced; PyPI and real external adapters remain separate post-alpha gates.",
+      "depends_on": [
+        "GH38",
+        "GH39"
+      ],
+      "executor": "ASSISTANT_GITHUB_CONNECTOR_AFTER_REPO_EXISTS",
+      "id": "GH57",
+      "phase": "ALPHA_EXIT",
+      "required_evidence": "alpha exit receipt",
+      "status": "PLANNED"
+    }
+  ],
+  "target": "qcax/qcax-fabric"
+}
