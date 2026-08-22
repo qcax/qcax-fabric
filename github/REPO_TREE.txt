@@ -1,3 +1,4 @@
+.github/CODEOWNERS
 .github/ISSUE_TEMPLATE/bug.yml
 .github/ISSUE_TEMPLATE/rfc.yml
 .github/pull_request_template.md

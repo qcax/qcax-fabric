@@ -7,4 +7,4 @@
 - Trusted-in-process alpha execution model; untrusted process isolation remains a later gate.
 - Language-neutral JSON Schema contracts and RFC 8785-compatible restricted canonical receipt profile.
 - Independent Python distributions for contracts, SDK, host, pinned providers, Prompt Hardener and Memory.
-- GitHub ruleset/security/CI/release plans prepared but not applied before explicit authorization.
+- GitHub bootstrap CI, security controls, and main-branch ruleset exercised during publication; immutable release publication remains separately gated.
