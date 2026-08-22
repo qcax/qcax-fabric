@@ -1,6 +1,7 @@
 from pathlib import Path
 import json,re,sys,tomllib
 ROOT=Path(__file__).resolve().parents[1]
+sys.dont_write_bytecode=True
 sys.path.insert(0,str(ROOT/'scripts'))
 from contract_conformance_lib import run_contract_conformance
 errors=[]; checks=0
