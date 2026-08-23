@@ -42,6 +42,7 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.13"
+      - run: python -m pip install -r requirements/release-verify.txt
       - name: Verify immutable GitHub release + replay + PyPI prestate
         id: plan
         env:
@@ -92,6 +93,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
+      attestations: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -100,8 +102,10 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.13"
-      - run: python -m pip install -r requirements/release-verify.txt
+      - run: python -m pip install -r requirements/test.txt -r requirements/release.txt -r requirements/release-verify.txt
       - name: Verify all PyPI files, hashes, PEP 740 provenance and live installs
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: >
           python release/tooling/pypi_postverify.py
           --tag "${{ inputs.release_tag }}"

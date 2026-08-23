@@ -12,6 +12,8 @@ jobs:
     timeout-minutes: 45
     env:
       ACTIONS_CACHE_MODE: none
+      QCAX_EXPECTED_COMMIT: ${{ github.sha }}
+      QCAX_RELEASE_TAG: ${{ github.event.release.tag_name }}
     permissions:
       contents: read
       attestations: read
@@ -43,12 +45,31 @@ jobs:
           upload-artifact: false
           upload-release-assets: false
           dependency-snapshot: false
-      - name: Finalize and compare class-aware equivalence
+      - name: Finalize and verify replay candidate
+        run: |
+          python release/tooling/finalize_payload.py replay-assets
+          python release/tooling/verify_candidate.py replay-assets
+      - name: Download exact immutable release assets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          python release/tooling/finalize_payload.py replay-assets --replay
-          python release/tooling/verify_candidate.py replay-assets
-          python release/tooling/compare_replay.py replay-assets --repo "$GITHUB_REPOSITORY" --tag "${{ github.event.release.tag_name }}"
+        run: gh release download "${{ github.event.release.tag_name }}" --repo "$GITHUB_REPOSITORY" --dir published-assets
+      - name: Compare class-aware replay equivalence
+        run: >
+          python release/tooling/compare_replay.py replay-assets
+          --published published-assets
+          --repo "$GITHUB_REPOSITORY"
+          --tag "${{ github.event.release.tag_name }}"
+          > replay-comparison.json
       - name: Write replay receipt
-        run: python release/tooling/record_replay_receipt.py
+        run: >
+          python release/tooling/record_replay_receipt.py
+          --candidate replay-assets
+          --comparison replay-comparison.json
+          --out replay-receipt.json
+      - name: Upload replay receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: qcax-replay-receipt-${{ github.event.release.tag_name }}
+          path: replay-receipt.json
+          if-no-files-found: error
+          retention-days: 30

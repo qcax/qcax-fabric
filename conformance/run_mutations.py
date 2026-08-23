@@ -10,12 +10,13 @@ SCRIPTS=(
  'tests/release/test_w7_package_mutations.py',
  'tests/release/test_version_gate_mutations.py',
  'tests/release/test_authority_mutations.py',
+ 'tests/release/test_w9_provider_mutations.py',
 )
 
 def run_one(rel):
     start=time.monotonic()
     p=subprocess.run([sys.executable,str(ROOT/rel)],cwd=str(ROOT),
-        env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'},capture_output=True,text=True,timeout=60)
+        env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'},capture_output=True,text=True,timeout=90)
     out=p.stdout.strip(); parsed=None
     if out:
         try: parsed=json.loads(out.splitlines()[-1])
@@ -24,8 +25,6 @@ def run_one(rel):
             'result':parsed,'stderr':p.stderr.strip()[-500:]}
 
 def main():
-    # Each family mutates only its own private temporary workspace copy, so cross-family
-    # parallelism is isolated and safe while keeping the aggregate within CI execution windows.
     rows=[]
     with ThreadPoolExecutor(max_workers=len(SCRIPTS)) as ex:
         futs={ex.submit(run_one,rel):rel for rel in SCRIPTS}
@@ -39,7 +38,7 @@ def main():
         parsed=row.get('result') or {}; m=parsed.get('mutations',0)
         total_mut += m if isinstance(m,int) else len(m) if isinstance(m,list) else 0
         total_killed += int(parsed.get('killed',0) or 0)
-    result={'schema':'qcax.mutation-aggregate/4','status':'PASS' if not failed else 'FAIL',
+    result={'schema':'qcax.mutation-aggregate/5','status':'PASS' if not failed else 'FAIL',
             'scripts':len(SCRIPTS),'mutations':total_mut,'killed':total_killed,'failed':failed,'runs':rows}
     print(json.dumps(result,sort_keys=True))
     if failed: raise SystemExit(1)

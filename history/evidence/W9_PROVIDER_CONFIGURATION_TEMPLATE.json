@@ -1,0 +1,20 @@
+{
+  "boundary": "Template only. This is not provider-state evidence and MUST NOT be renamed/promoted to W9_PROVIDER_CONFIGURATION.json until all fields are established by direct current provider readback.",
+  "github": {
+    "actions_sha_pinning_required": null,
+    "github_release_environment_verified": null,
+    "immutable_releases": null,
+    "main_ruleset_required_checks_verified": null,
+    "pypi_environment_verified": null
+  },
+  "observed_commit": null,
+  "observed_utc": null,
+  "overall": "HOLD",
+  "pypi": {
+    "environment": "pypi",
+    "projects": [],
+    "workflow": ".github/workflows/pypi-publish.yml"
+  },
+  "repository": "qcax/qcax-fabric",
+  "schema": "qcax.provider-configuration-receipt/1"
+}
