@@ -1,9 +1,10 @@
 {
-  "environment": "pypi",
+  "environment_model": "per-project",
   "postverify": [
     "download every published wheel/sdist from PyPI",
     "verify SHA-256 equals candidate manifest",
-    "verify PEP 740 provenance / Trusted Publisher identity",
+    "verify Integrity API publisher kind/repository/workflow/environment for every file",
+    "verify PEP 740 provenance / Trusted Publisher identity cryptographically",
     "clean install host plus first-party plugins from PyPI",
     "run installed-image and out-of-tree plugin canaries"
   ],
@@ -11,9 +12,9 @@
     "release identity activated",
     "GitHub immutable release exact and replay PASS",
     "all 11 project names ownership/pending publisher state confirmed",
-    "Trusted Publisher repository/workflow/environment identity matches every project",
+    "all 11 exact project/workflow/environment Trusted Publisher bindings directly verified",
     "no target filename exists with a different digest",
-    "any already-present file must match exact SHA-256 and expected Trusted Publisher provenance",
+    "any already-present file must match exact SHA-256, exact Integrity API publisher identity and cryptographically verified Trusted Publisher provenance",
     "all internal dependency version constraints equal coordinated version"
   ],
   "project_count": 11,
@@ -30,19 +31,32 @@
     "qcax-fabric-plugin-truth-policy",
     "qcax-fabric-plugin-hello-example"
   ],
-  "publisher_model": "one GitHub Trusted Publisher workflow may be registered to multiple PyPI projects",
-  "schema": "qcax.pypi-publication-policy/2",
+  "publisher_model": "one top-level GitHub Trusted Publisher workflow with one distinct OIDC environment per project",
+  "schema": "qcax.pypi-publication-policy/3",
   "transaction": {
     "atomic": false,
     "basis": "PyPI releases/files are uploaded one file at a time and QCAX spans multiple PyPI projects",
     "dependency_visibility": "a partial run may temporarily expose dependents before foundations; this is recorded as PARTIAL_PYPI_PUBLICATION and is not RELEASE_COMPLETE",
     "on_mismatch": "INCIDENT; never overwrite or blind-skip; evaluate yank of affected version(s)",
     "on_partial_exact": "PARTIAL_PYPI_PUBLICATION; re-read index/integrity state; construct a new missing-only exact subset after review",
-    "upload_order": "NOT_A_CORRECTNESS_ASSUMPTION; the official publisher/tool/provider may choose file order"
+    "upload_order": "NOT_A_CORRECTNESS_ASSUMPTION; the official publisher/tool/provider or matrix scheduler may choose project/file order"
   },
+  "trusted_publishers": [
+    {"environment": "pypi", "name": "qcax-fabric-contracts"},
+    {"environment": "pypi-sdk", "name": "qcax-fabric-sdk"},
+    {"environment": "pypi-host", "name": "qcax-fabric-host"},
+    {"environment": "pypi-plugin-authorization", "name": "qcax-fabric-plugin-authorization"},
+    {"environment": "pypi-plugin-canonical-identity", "name": "qcax-fabric-plugin-canonical-identity"},
+    {"environment": "pypi-plugin-memory", "name": "qcax-fabric-plugin-memory"},
+    {"environment": "pypi-plugin-prompt-hardener", "name": "qcax-fabric-plugin-prompt-hardener"},
+    {"environment": "pypi-plugin-provenance", "name": "qcax-fabric-plugin-provenance"},
+    {"environment": "pypi-plugin-source-admission", "name": "qcax-fabric-plugin-source-admission"},
+    {"environment": "pypi-plugin-truth-policy", "name": "qcax-fabric-plugin-truth-policy"},
+    {"environment": "pypi-plugin-hello-example", "name": "qcax-fabric-plugin-hello-example"}
+  ],
   "workflow": ".github/workflows/pypi-publish.yml",
   "workflow_minimization": [
-    "download/obtain immutable verified distributions",
-    "publish distributions"
+    "download/obtain the exact prechecked project-specific distribution subset",
+    "publish that project's distributions"
   ]
 }

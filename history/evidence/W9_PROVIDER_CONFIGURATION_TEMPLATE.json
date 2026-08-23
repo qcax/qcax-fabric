@@ -5,14 +5,26 @@
     "github_release_environment_verified": null,
     "immutable_releases": null,
     "main_ruleset_required_checks_verified": null,
-    "pypi_environment_verified": null
+    "pypi_environments_verified": null
   },
   "observed_commit": null,
   "observed_utc": null,
   "overall": "HOLD",
   "pypi": {
-    "environment": "pypi",
-    "projects": [],
+    "environment_model": "per-project",
+    "projects": [
+      {"environment": "pypi", "name": "qcax-fabric-contracts", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-sdk", "name": "qcax-fabric-sdk", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-host", "name": "qcax-fabric-host", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-authorization", "name": "qcax-fabric-plugin-authorization", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-canonical-identity", "name": "qcax-fabric-plugin-canonical-identity", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-memory", "name": "qcax-fabric-plugin-memory", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-prompt-hardener", "name": "qcax-fabric-plugin-prompt-hardener", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-provenance", "name": "qcax-fabric-plugin-provenance", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-source-admission", "name": "qcax-fabric-plugin-source-admission", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-truth-policy", "name": "qcax-fabric-plugin-truth-policy", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"},
+      {"environment": "pypi-plugin-hello-example", "name": "qcax-fabric-plugin-hello-example", "repository": "qcax/qcax-fabric", "trusted_publisher_verified": null, "workflow": "pypi-publish.yml"}
+    ],
     "workflow": ".github/workflows/pypi-publish.yml"
   },
   "repository": "qcax/qcax-fabric",
