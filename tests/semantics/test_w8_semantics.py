@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import base64,hashlib,importlib,json,sys,tempfile,unittest
+import base64,hashlib,importlib,json,os,shutil,sys,tempfile,unittest
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
 for p in ('packages/contracts/src','packages/sdk/src','packages/host/src'):
@@ -113,6 +113,25 @@ class W8(unittest.TestCase):
             expected=installed_image_digest_from_record_text(rec.read_text())
             self.assertEqual(verify_installed_record(rec,r,expected)['status'],'PASS')
             (r/'pkg/extra.py').write_text('x'); self.assertEqual(verify_installed_record(rec,r,expected)['status'],'FAIL')
+
+    def test_build_backend_relative_output_path(self):
+        # Regression for PR CI: build outputs may be relative to repository root.
+        tooling=ROOT/'release/tooling'
+        sys.path.insert(0,str(tooling))
+        import build_candidate as bc
+        old=Path.cwd()
+        try:
+            os.chdir(ROOT)
+            with tempfile.TemporaryDirectory(dir=ROOT) as td:
+                t=Path(td); pkg=t/'pkg'
+                shutil.copytree(ROOT/'packages/contracts',pkg)
+                rel=Path(t.name)/'out'
+                wheel,sdist=bc.build_one(pkg,rel)
+                self.assertEqual(wheel.parent.resolve(),(ROOT/rel).resolve())
+                self.assertEqual(sdist.parent.resolve(),(ROOT/rel).resolve())
+        finally:
+            os.chdir(old)
+
     def test_bootlock_order_invariant(self):
         a=LockedProvider('a','x.a','a'*64); b=LockedProvider('b','x.b','b'*64)
         x=PluginHost(BootLock('t','c',(a,b),(),False,'g')).generation_digest

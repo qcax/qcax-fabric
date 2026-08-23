@@ -53,6 +53,8 @@ def run(cmd,cwd,env):
 
 def _backend_call(cwd:Path,method:str,out:Path):
     from setuptools import build_meta
+    # Resolve the output directory before changing cwd; GitHub PR workflows pass relative paths.
+    out=Path(out).resolve()
     old=Path.cwd(); old_epoch=os.environ.get('SOURCE_DATE_EPOCH')
     os.environ['SOURCE_DATE_EPOCH']=str(SOURCE_DATE_EPOCH)
     try:
