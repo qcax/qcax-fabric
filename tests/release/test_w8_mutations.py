@@ -70,9 +70,12 @@ def main():
     def fake_provider(r,c):
      p=r/'history/evidence/W7_PROVIDER_READBACK_BLOCKERS.json'; d=json.loads(p.read_text()); d['blocked_properties']['immutable_releases']['state']='VERIFIED'; p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
     cases.append(run('W8_M12_FAKE_PROVIDER_PROMOTION',fake_provider))
-    def active_version(r,c):
-     p=r/'release/policy/release-contract.json'; d=json.loads(p.read_text()); d['release_identity']['status']='ACTIVE'; p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
-    cases.append(run('W8_M13_PREMATURE_VERSION_ACTIVE',active_version))
+    def demote_version(r,c):
+     p=r/'release/policy/release-contract.json'; d=json.loads(p.read_text()); d['release_identity']['status']='HOLD_UNTIL_SEMANTIC_VERSION_GATE'; p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
+    cases.append(run('W8_M13_ACTIVE_VERSION_DEMOTION',demote_version))
+    def rollback_provider_gate(r,c):
+     p=r/'history/evidence/VERSION_PROVIDER_ABSENCE.json'; d=json.loads(p.read_text()); d['overall']='HOLD_PROVIDER_ABSENCE'; p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
+    cases.append(run('W8_M14_PROVIDER_GATE_ROLLBACK',rollback_provider_gate))
     surv=[x['id'] for x in cases if not x['killed']]
     print(json.dumps({'status':'PASS' if not surv else 'FAIL','mutations':len(cases),'killed':sum(x['killed'] for x in cases),'survivors':surv},sort_keys=True))
     if surv: sys.exit(1)

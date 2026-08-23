@@ -110,12 +110,19 @@ for base in (ROOT/'release',ROOT/'docs'):
                 stale.append(str(p.relative_to(ROOT)))
 check(not stale,'stale ordered-PyPI semantics remain: '+','.join(stale))
 
-# Version/release identity stays held during local qualification.
-contract=json.loads((ROOT/'release/policy/release-contract.json').read_text())
+# Version/release identity is now provider-gated ACTIVE, while publication remains separately held.
+contract=json.loads((ROOT/'release/policy/release-contract.json').read_text(encoding='utf-8'))
 ri=contract.get('release_identity',{})
-check(ri.get('status')!='ACTIVE','release identity activated before continuity/provider gates')
+check(ri.get('status')=='ACTIVE','release identity is not ACTIVE after provider gate closure')
+check(ri.get('selected_tag')=='v0.1.0-alpha.1','selected release tag drift')
+check(ri.get('selected_version')=='0.1.0a1','selected release version drift')
+provider=json.loads((ROOT/'history/evidence/VERSION_PROVIDER_ABSENCE.json').read_text(encoding='utf-8'))
+check(provider.get('overall')=='NO_PRIOR_ARTIFACT_PROVED','provider gate not closed')
+check(provider.get('github_release_tag')=='ABSENT_DIRECT_PROVIDER_READ','GitHub direct provider evidence missing')
+check(provider.get('pypi_identity')=='ABSENT_DIRECT_PROVIDER_READ','PyPI direct provider evidence missing')
+check(provider.get('pypi_search_observation_is_absence_proof') is False,'search miss admitted as provider proof')
 
-# Provider promotion readbacks are load-bearing and must remain explicit blockers when inaccessible.
+# Provider promotion readbacks for publication controls remain explicit blockers when inaccessible.
 blockers=json.loads((ROOT/'history/evidence/W7_PROVIDER_READBACK_BLOCKERS.json').read_text())
 required={'immutable_releases','actions_sha_pinning_required','release_environments','main_ruleset'}
 check(required<=set(blockers.get('blocked_properties',{})), 'provider readback blocker set incomplete')

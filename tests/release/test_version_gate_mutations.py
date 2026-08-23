@@ -4,9 +4,16 @@ import json,os,shutil,subprocess,sys,tempfile
 sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[2]
 ENV={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'}
+TAG='v0.1.0-alpha.1'
+VERSION='0.1.0a1'
+GOOD_COMMIT='1'*40
 
 def run(root):
     return subprocess.run([sys.executable,str(root/'tools/validate_version_gate.py')],cwd=str(root),
+                          capture_output=True,text=True,env=ENV,timeout=30)
+
+def run_activation(root,args):
+    return subprocess.run([sys.executable,str(root/'release/tooling/activate_contract.py'),*args],cwd=str(root),
                           capture_output=True,text=True,env=ENV,timeout=30)
 
 def main():
@@ -36,12 +43,41 @@ def main():
         mutate('VG_M5_PLUGIN_ID_DRIFT','packages/plugins/authorization/src/qcax_plugin_authorization/qcax-plugin.json',plugin_id)
         mutate('VG_M6_PACKAGE_VERSION_DRIFT','packages/sdk/pyproject.toml',lambda p:p.write_text(p.read_text().replace('version = "0.1.0a1"','version = "0.1.0a2"',1),encoding='utf-8'))
         delete('VG_M7_DELETE_MIGRATION_NOTE','history/migration/FIRST_PUBLIC_ALPHA_MIGRATION.md')
-        def activate(p):
-            d=json.loads(p.read_text()); d['release_identity']['status']='ACTIVE'; p.write_text(json.dumps(d),encoding='utf-8')
-        mutate('VG_M8_PREMATURE_ALPHA1_ACTIVATION','release/policy/release-contract.json',activate)
-        clean=run(r); survivors=[x['id'] for x in cases if not x['killed']]
-        result={'status':'PASS' if not survivors and clean.returncode==0 else 'FAIL','mutations':len(cases),
-                'killed':sum(x['killed'] for x in cases),'survivors':survivors,'post_restore_validator_returncode':clean.returncode}
+        def contract_change(key,value):
+            def fn(p):
+                d=json.loads(p.read_text()); d['release_identity'][key]=value; p.write_text(json.dumps(d),encoding='utf-8')
+            return fn
+        mutate('VG_M8_DEMOTE_ACTIVE_IDENTITY','release/policy/release-contract.json',contract_change('status','HOLD_UNTIL_SEMANTIC_VERSION_GATE'))
+        mutate('VG_M9_SELECTED_TAG_DRIFT','release/policy/release-contract.json',contract_change('selected_tag','v0.1.0-alpha.2'))
+        mutate('VG_M10_SELECTED_VERSION_DRIFT','release/policy/release-contract.json',contract_change('selected_version','0.1.0a2'))
+        def provider_change(fn):
+            def inner(p):
+                d=json.loads(p.read_text()); fn(d); p.write_text(json.dumps(d),encoding='utf-8')
+            return inner
+        mutate('VG_M11_PROVIDER_OVERALL_DRIFT','history/evidence/VERSION_PROVIDER_ABSENCE.json',provider_change(lambda d:d.__setitem__('overall','HOLD_PROVIDER_ABSENCE')))
+        mutate('VG_M12_PYPI_STATUS_DRIFT','history/evidence/VERSION_PROVIDER_ABSENCE.json',provider_change(lambda d:d['pypi_direct_reads'][0].__setitem__('version_json_status',200)))
+        mutate('VG_M13_GITHUB_RELEASE_STATUS_DRIFT','history/evidence/VERSION_PROVIDER_ABSENCE.json',provider_change(lambda d:d['github_direct_reads']['release_by_tag'].__setitem__('status_code',200)))
+        mutate('VG_M14_SEARCH_MISS_ADMITTED','history/evidence/VERSION_PROVIDER_ABSENCE.json',provider_change(lambda d:d.__setitem__('pypi_search_observation_is_absence_proof',True)))
+
+        clean=run(r)
+        activation=[]
+        good=run_activation(r,['--tag',TAG,'--commit',GOOD_COMMIT,'--verify-only'])
+        good_payload=None
+        if good.returncode==0:
+            try: good_payload=json.loads(good.stdout)
+            except Exception: pass
+        activation.append({'id':'ACT_C1_VALID_VERIFY_ONLY','passed':good.returncode==0 and good_payload=={'commit':GOOD_COMMIT,'status':'ACTIVE','tag':TAG,'version':VERSION}})
+        activation.append({'id':'ACT_C2_WRONG_TAG_REJECTED','passed':run_activation(r,['--tag','v0.1.0-alpha.2','--commit',GOOD_COMMIT,'--verify-only']).returncode!=0})
+        activation.append({'id':'ACT_C3_SHORT_COMMIT_REJECTED','passed':run_activation(r,['--tag',TAG,'--commit','1234','--verify-only']).returncode!=0})
+        activation.append({'id':'ACT_C4_UPPERCASE_COMMIT_REJECTED','passed':run_activation(r,['--tag',TAG,'--commit','A'*40,'--verify-only']).returncode!=0})
+        activation.append({'id':'ACT_C5_MISSING_VERIFY_ONLY_REJECTED','passed':run_activation(r,['--tag',TAG,'--commit',GOOD_COMMIT]).returncode!=0})
+
+        survivors=[x['id'] for x in cases if not x['killed']]
+        failed_activation=[x['id'] for x in activation if not x['passed']]
+        result={'status':'PASS' if not survivors and clean.returncode==0 and not failed_activation else 'FAIL',
+                'mutations':len(cases),'killed':sum(x['killed'] for x in cases),'survivors':survivors,
+                'activation_checks':len(activation),'activation_passed':sum(x['passed'] for x in activation),
+                'activation_failures':failed_activation,'post_restore_validator_returncode':clean.returncode}
         print(json.dumps(result,sort_keys=True))
         if result['status']!='PASS': raise SystemExit(1)
 if __name__=='__main__': main()

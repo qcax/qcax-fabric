@@ -26,9 +26,12 @@ def main():
             if not existed:
                 try:d.rmdir()
                 except OSError:pass
-        def activate(p):
-            d=json.loads(p.read_text()); d['release_identity']['status']='ACTIVE'; p.write_text(json.dumps(d),encoding='utf-8')
-        mutate('AUTH_M5_RELEASE_ACTIVATION','release/policy/release-contract.json',activate)
+        def demote(p):
+            d=json.loads(p.read_text()); d['release_identity']['status']='HOLD_UNTIL_SEMANTIC_VERSION_GATE'; p.write_text(json.dumps(d),encoding='utf-8')
+        mutate('AUTH_M5_ACTIVE_IDENTITY_DEMOTION','release/policy/release-contract.json',demote)
+        def provider_hold(p):
+            d=json.loads(p.read_text()); d['overall']='HOLD_PROVIDER_ABSENCE'; p.write_text(json.dumps(d),encoding='utf-8')
+        mutate('AUTH_M6_PROVIDER_GATE_ROLLBACK','history/evidence/VERSION_PROVIDER_ABSENCE.json',provider_hold)
         clean=run(r); survivors=[x['id'] for x in cases if not x['killed']]
         result={'status':'PASS' if not survivors and clean.returncode==0 else 'FAIL','mutations':len(cases),'killed':sum(x['killed'] for x in cases),'survivors':survivors,'post_restore_validator_returncode':clean.returncode}
         print(json.dumps(result,sort_keys=True))
