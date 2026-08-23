@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use QCAX Fabric, please cite the repository or an immutable release once one is published."
+title: "QCAX Fabric"
+authors:
+  - name: "QCAX ONE Project"
+license: Apache-2.0
+type: software
+repository-code: "https://github.com/qcax/qcax-fabric"

@@ -1,0 +1,16 @@
+{
+  "adapter": "inspect",
+  "boundary": "external evaluation semantics only; no authority transfer",
+  "mechanism": "framework-neutral evaluation wall/sandbox bridge",
+  "phase": "ALPHA2_REAL_CANARY",
+  "required_tests": [
+    "public contract mapping",
+    "identity/provenance preservation",
+    "guard preservation",
+    "rollback/failure isolation",
+    "heldout conformance vectors",
+    "operator cost"
+  ],
+  "source_family": "Inspect AI",
+  "status": "NOT_IMPLEMENTED_NOT_CLAIMED"
+}

@@ -17,6 +17,20 @@ for rel in ('tools/validate_authority_boundaries.py','tools/validate_workflows.p
             'tools/validate_w7_packages.py','tools/validate_version_gate.py'):
     run(rel)
 
+# Public/repository continuity and cross-target isolation must not be erased by clean-slate assembly.
+required_public=(
+ 'README.md','CITATION.cff','CODE_OF_CONDUCT.md','CONTRIBUTING.md','GOVERNANCE.md','SECURITY.md','SUPPORT.md',
+ '.github/ISSUE_TEMPLATE/bug.yml','.github/ISSUE_TEMPLATE/rfc.yml','.github/pull_request_template.md',
+)
+required_isolation=(
+ 'adapters/acp/ADAPTER_PLAN.json','adapters/cordis/ADAPTER_PLAN.json','adapters/inspect/ADAPTER_PLAN.json',
+ 'adapters/langgraph/ADAPTER_PLAN.json','adapters/temporal/ADAPTER_PLAN.json',
+ 'profiles/forecasting/PROFILE_PLAN.json','profiles/leadfinder/PROFILE_PLAN.json',
+ 'profiles/mathematics/PROFILE_PLAN.json','profiles/research/PROFILE_PLAN.json',
+)
+for rel in required_public+required_isolation:
+    if not (ROOT/rel).is_file(): errors.append(f'required preserved repository path missing: {rel}')
+
 # Parse all JSON and workflows; validate every declared JSON Schema itself.
 json_count=0; schema_count=0
 for p in ROOT.rglob('*.json'):
