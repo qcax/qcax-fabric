@@ -1,0 +1,35 @@
+{
+  "$id": "https://qcax.example/schema/active-cut.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "authority_order": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 3,
+      "type": "array"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "reference_snapshot": {
+      "type": "object"
+    },
+    "schema": {
+      "const": "qcax.active-cut/1"
+    },
+    "target_repository": {
+      "pattern": "^[^/]+/[^/]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "target_repository",
+    "mode",
+    "authority_order"
+  ],
+  "title": "QCAX Active Cut",
+  "type": "object"
+}

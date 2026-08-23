@@ -1,0 +1,41 @@
+# Publication Checklist
+
+- [ ] ACTIVE_CUT rebased against Drive + live GitHub.
+- [ ] Clean-slate semantic version/tag gate resolved.
+- [ ] Repository ID, main SHA and tree frozen.
+- [ ] No open release-affecting PRs.
+- [ ] Main ruleset/required checks confirmed live.
+- [ ] GitHub immutable releases enabled.
+- [ ] `github-release` environment protections confirmed.
+- [ ] `pypi` environment protections confirmed.
+- [ ] All third-party Action SHAs revalidated.
+- [ ] All 11 project names, ownership and Trusted Publisher mappings confirmed.
+- [ ] Package normalized names unique.
+- [ ] PEP 639 metadata and license files verified in wheel + sdist.
+- [ ] PEP 794 import-name decision backed by actual wheel contents.
+- [ ] Exact release toolchain/lock admitted.
+- [ ] Release cache disabled.
+- [ ] Two clean wheel builds byte-identical.
+- [ ] Sdist semantic twins pass.
+- [ ] Sdist-derived wheel installed parity passes.
+- [ ] Cross-platform CI passes.
+- [ ] Semantic mutation suite kills all release/control mutations.
+- [ ] Installed-image and out-of-tree plugin canaries pass.
+- [ ] Release SBOM covers every package/version.
+- [ ] Derived artifact set is exact: `2*N + 8`; current N=11 -> 30.
+- [ ] Payload manifest/checksums bind source commit/tree/package-set/run/attempt/member assets.
+- [ ] Separate post-upload preflight receipt binds candidate artifact ID/digest to payload-manifest SHA-256.
+- [ ] GitHub build/SBOM attestations verify.
+- [ ] GitHub immutable draft prestate exact.
+- [ ] Protected environment approval granted.
+- [ ] Immutable GitHub release published once.
+- [ ] GitHub release attestation/tag/assets verify.
+- [ ] `release:published` replay passes.
+- [ ] PyPI precheck classifies all files exact-absent/exact-present.
+- [ ] Missing-only PyPI subset created.
+- [ ] Protected `pypi` approval granted.
+- [ ] PyPI exact publication completes or exact partial state is reconciled.
+- [ ] Every PyPI file digest + PEP 740 provenance verifies.
+- [ ] Live PyPI clean installs/canaries pass.
+- [ ] Release completion receipt written.
+- [ ] Claim ceiling applied.

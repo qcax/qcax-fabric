@@ -1,0 +1,34 @@
+{
+  "distribution_classes_per_package": [
+    "wheel",
+    "sdist"
+  ],
+  "expected_asset_count": 30,
+  "formula": "2 * package_count + len(singleton_controls)",
+  "magic_constant_policy": "FORBID hard-coded 30 in release logic; derive from package set and control set",
+  "package_count": 11,
+  "package_set_digest_sha256": "b328178798965c049788626bec5d668263cc50cf5c4f2b02820895464566fdbc",
+  "rules": [
+    "exactly one wheel and one sdist per first-party publishable package unless a package-specific platform matrix is explicitly introduced",
+    "no duplicate filenames after normalization",
+    "every release asset is represented in payload-manifest.json and SHA256SUMS",
+    "payload-manifest.json binds source commit, source tree, release identity, package-set digest, workflow run ID/attempt, and every member asset digest",
+    "candidate container identity (Actions artifact ID and artifact SHA-256 digest) is recorded only after upload in a separate preflight-receipt.json; it MUST NOT be embedded into the artifact it hashes",
+    "preflight receipt binds candidate artifact ID/digest to payload-manifest SHA-256 plus source/release/run identities",
+    "release-lock binds package identities, normalized project names, versions, wheel hashes, sdist semantic-content hashes and dependency graph",
+    "SBOM coverage must include all publishable first-party projects and exact versions",
+    "release publisher must reject missing, unexpected, mismatched, or digest-unknown assets",
+    "conformance-bundle.zip binds the exact tests/, tools/ and conformance/ source snapshot used by the candidate"
+  ],
+  "schema": "qcax.release-artifact-set/2",
+  "singleton_controls": [
+    "release-lock.json",
+    "sbom.spdx.json",
+    "spec-bundle.zip",
+    "conformance-bundle.zip",
+    "RELEASE_NOTES.md",
+    "qcax-release-provenance.json",
+    "payload-manifest.json",
+    "SHA256SUMS"
+  ]
+}

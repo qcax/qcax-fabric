@@ -1,0 +1,55 @@
+{
+  "$id": "https://qcax.example/schema/pypi-publication-receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "overall_state": {
+      "enum": [
+        "PRECHECK_PASS",
+        "PARTIAL_PYPI_PUBLICATION",
+        "PYPI_EXACT",
+        "PYPI_POSTVERIFY_PASS",
+        "INCIDENT"
+      ]
+    },
+    "projects": {
+      "items": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "files"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "release_tag": {
+      "type": "string"
+    },
+    "schema": {
+      "const": "qcax.pypi-publication-receipt/2"
+    },
+    "source_commit": {
+      "pattern": "^[0-9a-f]{40}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "release_tag",
+    "source_commit",
+    "projects",
+    "overall_state"
+  ],
+  "type": "object"
+}

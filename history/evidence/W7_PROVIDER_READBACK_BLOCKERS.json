@@ -1,0 +1,29 @@
+{
+  "blocked_properties": {
+    "actions_sha_pinning_required": {
+      "endpoint": "GET /repos/qcax/qcax-fabric/actions/permissions",
+      "required_value": true,
+      "state": "INACCESSIBLE_CURRENT_CONNECTOR"
+    },
+    "immutable_releases": {
+      "endpoint": "GET /repos/qcax/qcax-fabric/immutable-releases",
+      "required_value": true,
+      "state": "INACCESSIBLE_CURRENT_CONNECTOR"
+    },
+    "main_ruleset": {
+      "endpoint": "GET /repos/qcax/qcax-fabric/rules/branches/main",
+      "required_value": "required checks/bypass posture matches release policy",
+      "state": "INACCESSIBLE_CURRENT_CONNECTOR"
+    },
+    "release_environments": {
+      "endpoint": "GET /repos/qcax/qcax-fabric/environments",
+      "required_value": "github-release and pypi protected/reviewed",
+      "state": "INACCESSIBLE_CURRENT_CONNECTOR"
+    }
+  },
+  "local_work_may_continue": true,
+  "observed_commit": "74e6d62e633746676650d66c6789dd6f56621305",
+  "promotion_effect": "HOLD_PROVIDER_PROMOTION_ONLY",
+  "schema": "qcax.provider-readback-blockers/1",
+  "target": "qcax/qcax-fabric"
+}

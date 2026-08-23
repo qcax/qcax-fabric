@@ -1,0 +1,154 @@
+{
+  "active_plugins": [
+    "org.qcax.truth-policy",
+    "org.qcax.authorization",
+    "org.qcax.canonical-identity",
+    "org.qcax.provenance",
+    "org.qcax.source-admission",
+    "org.qcax.memory",
+    "org.qcax.prompt-hardener",
+    "example.qcax.hello"
+  ],
+  "distributions": [
+    {
+      "installed_image_sha256": "be51417ca1edba4a3bd14da8f94743878d4357299568eccba96095906e281d13",
+      "name": "qcax-fabric-contracts",
+      "record": "RECORD",
+      "verified_bytes": 27023,
+      "verified_record_entries": 9,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "02cf85cd0d9cf40c44df010db18d7fb2410f2a692b993b1ac007fd204371f631",
+      "name": "qcax-fabric-host",
+      "record": "RECORD",
+      "verified_bytes": 29775,
+      "verified_record_entries": 7,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "2f573b66ffddc797f3cdc0b0f3aa37492b97a1634ccab316b912cb0dcd17483e",
+      "name": "qcax-fabric-plugin-authorization",
+      "record": "RECORD",
+      "verified_bytes": 13506,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "fad56cb36c7fa8223a90a440248f9bad4aa0e23eb5923dcd9f9be479cfb35dae",
+      "name": "qcax-fabric-plugin-canonical-identity",
+      "record": "RECORD",
+      "verified_bytes": 13433,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "e3043841333324f7dd607871a25477a1d1e810bdc64df6e27ffb5246a68ccba3",
+      "name": "qcax-fabric-plugin-hello-example",
+      "record": "RECORD",
+      "verified_bytes": 13391,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "aea579203353cb6e7d68715dc9ce24321aceeff046f321c392eedba194a027fb",
+      "name": "qcax-fabric-plugin-memory",
+      "record": "RECORD",
+      "verified_bytes": 14106,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "a6102b643bcba3b8a9aae81b2b8c911ad8a7d51dbe43996d9626d9dfd8e018bc",
+      "name": "qcax-fabric-plugin-prompt-hardener",
+      "record": "RECORD",
+      "verified_bytes": 13873,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "25e236eabb4b65b8dfa842322bdf84887585f18a3b215f65f1e40c06aa065981",
+      "name": "qcax-fabric-plugin-provenance",
+      "record": "RECORD",
+      "verified_bytes": 13369,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "b67dab6210a637832164255a6c8ab1e790b85b291dacfa7c74223289c70217d1",
+      "name": "qcax-fabric-plugin-source-admission",
+      "record": "RECORD",
+      "verified_bytes": 13724,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "830507985e4f6644293b3572832aad60b593ed5830b67f30aaa1c6175e3268c7",
+      "name": "qcax-fabric-plugin-truth-policy",
+      "record": "RECORD",
+      "verified_bytes": 13449,
+      "verified_record_entries": 8,
+      "version": "0.1.0a1"
+    },
+    {
+      "installed_image_sha256": "1438851b9a80ddf5dd1469fe8f92a9e4c68024b69a1ef3e925347e696df40b80",
+      "name": "qcax-fabric-sdk",
+      "record": "RECORD",
+      "verified_bytes": 23918,
+      "verified_record_entries": 9,
+      "version": "0.1.0a1"
+    }
+  ],
+  "entry_points": [
+    {
+      "distribution": "qcax-fabric-plugin-authorization",
+      "group": "qcax.fabric.plugins",
+      "name": "authorization",
+      "value": "qcax_plugin_authorization:definition"
+    },
+    {
+      "distribution": "qcax-fabric-plugin-canonical-identity",
+      "group": "qcax.fabric.plugins",
+      "name": "canonical_identity",
+      "value": "qcax_plugin_canonical_identity:definition"
+    },
+    {
+      "distribution": "qcax-fabric-plugin-hello-example",
+      "group": "qcax.fabric.plugins",
+      "name": "hello_plugin",
+      "value": "qcax_plugin_hello_example:definition"
+    },
+    {
+      "distribution": "qcax-fabric-plugin-memory",
+      "group": "qcax.fabric.plugins",
+      "name": "memory",
+      "value": "qcax_plugin_memory:definition"
+    },
+    {
+      "distribution": "qcax-fabric-plugin-prompt-hardener",
+      "group": "qcax.fabric.plugins",
+      "name": "prompt_hardener",
+      "value": "qcax_plugin_prompt_hardener:definition"
+    },
+    {
+      "distribution": "qcax-fabric-plugin-provenance",
+      "group": "qcax.fabric.plugins",
+      "name": "provenance",
+      "value": "qcax_plugin_provenance:definition"
+    },
+    {
+      "distribution": "qcax-fabric-plugin-source-admission",
+      "group": "qcax.fabric.plugins",
+      "name": "source_admission",
+      "value": "qcax_plugin_source_admission:definition"
+    },
+    {
+      "distribution": "qcax-fabric-plugin-truth-policy",
+      "group": "qcax.fabric.plugins",
+      "name": "truth_policy",
+      "value": "qcax_plugin_truth_policy:definition"
+    }
+  ],
+  "generation_digest": "88fd3ab2797e35d44dfd0f096fcad66193ca918665f7a1250f59be378238ebe2",
+  "status": "PASS"
+}

@@ -1,4 +1,5 @@
-QCAX Cordis Harness Fabric Shadow Pilot R1
+QCAX Fabric
 Copyright 2026 QCAX ONE Project contributors.
 
-This project borrows architectural mechanisms from the sources listed in research/SOURCE_REGISTRY.json. No third-party source code from those projects is copied into the reference Python core. Names and trademarks remain property of their owners.
+Licensed under the Apache License, Version 2.0; see `LICENSE`.
+Third-party project names and trademarks remain the property of their respective owners.

@@ -1,12 +1,14 @@
-[project]
-name = "qcax-fabric-repository"
-version = "0.1.0a1"
-description = "QCAX Fabric monorepo metadata; packages are built independently"
-requires-python = ">=3.11"
-license = "Apache-2.0"
-license-files = ["LICENSE", "NOTICE"]
+# Repository-level development metadata only.
+# Each publishable distribution has its own packages/*/pyproject.toml.
+[dependency-groups]
+test = [
+  "jsonschema==4.26.0",
+]
+release = [
+  "build",
+  "packaging",
+  "pypi-attestations",
+]
 
-[tool.qcax]
-public_semver = "0.1.0-alpha.1"
-plugin_api = "qcax.fabric/v1alpha1"
-entry_point_group = "qcax.fabric.plugins"
+[tool.pytest.ini_options]
+testpaths = ["tests"]

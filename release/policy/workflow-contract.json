@@ -1,0 +1,51 @@
+{
+  "canonical_workflows": [
+    "ci.yml",
+    "conformance.yml",
+    "security.yml",
+    "release-preflight.yml",
+    "release-publish.yml",
+    "release-replay.yml",
+    "pypi-publish.yml"
+  ],
+  "forbidden_triggers_privileged": [
+    "pull_request_target"
+  ],
+  "full_sha_action_pins": true,
+  "irreversible_environments": {
+    "pypi-publish.yml/publish": "pypi",
+    "release-publish.yml/publish": "github-release"
+  },
+  "permission_contracts": {
+    "pypi-publish.yml/postverify": [
+      "contents:read"
+    ],
+    "pypi-publish.yml/precheck": [
+      "actions:read",
+      "contents:read",
+      "attestations:read"
+    ],
+    "pypi-publish.yml/publish": [
+      "actions:read",
+      "id-token:write"
+    ],
+    "release-preflight.yml/preflight": [
+      "contents:read",
+      "id-token:write",
+      "attestations:write",
+      "artifact-metadata:write"
+    ],
+    "release-publish.yml/publish": [
+      "actions:read",
+      "contents:write",
+      "attestations:read"
+    ],
+    "release-replay.yml/replay": [
+      "contents:read",
+      "attestations:read"
+    ]
+  },
+  "release_cache": "forbidden",
+  "schema": "qcax.workflow-contract/2",
+  "trusted_publisher_note": "PyPI publisher must register the top-level pypi-publish.yml, not a reusable workflow; current PyPI docs state reusable workflows cannot currently be the Trusted Publisher workflow."
+}

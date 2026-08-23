@@ -1,11 +1,31 @@
+# Python
 __pycache__/
 *.py[cod]
-*.egg-info/
 .venv/
 dist/
 build/
+*.egg-info/
+
+# Tool output
 .pytest_cache/
-.mypy_cache/
 .coverage
 htmlcov/
+
+# QCAX generated evidence: never canonical source
+release/generated/**
+!release/generated/.gitkeep
+conformance/generated/**
+!conformance/generated/.gitkeep
+
+# Release local scratch
+release-assets/
+sbom-root/
+replay-assets/
+pypi-missing/
+
+# OS/editor
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.qcax-local/

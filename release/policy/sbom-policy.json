@@ -1,0 +1,15 @@
+{
+  "per_distribution": {
+    "policy": "include package-contained SBOM for first-party wheel only after generator profile and wheel RECORD behavior are verified; not required to activate reboot phase 1",
+    "relationship": "top-level release SBOM remains canonical release-set inventory; wheel-contained SBOM is package-local",
+    "standard": "PEP 770 .dist-info/sboms/"
+  },
+  "release_sbom": {
+    "coverage": "all 11 first-party distribution identities plus resolved bundled/dependency components visible in exact wheel roots",
+    "fail_closed": "every release-lock distribution must occur exactly with expected version",
+    "format": "SPDX 2.3 JSON for initial reboot release",
+    "rationale": "validated interoperability with existing Anchore/Syft flow and GitHub SBOM attestation; defer SPDX 3.x migration until toolchain is tested"
+  },
+  "schema": "qcax.sbom-policy/2",
+  "source": "scan extracted exact wheel roots, not directory of wheel archive filenames"
+}

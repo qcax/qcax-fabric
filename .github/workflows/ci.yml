@@ -1,52 +1,35 @@
 name: ci
+
 on:
   pull_request:
   push:
     branches: [main]
+
 permissions:
   contents: read
+
 jobs:
-  linux-py311:
-    name: linux-py311
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: "3.11"
+          - os: ubuntu-latest
+            python: "3.14"
+          - os: macos-latest
+            python: "3.13"
+          - os: windows-latest
+            python: "3.13"
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7 observed 2026-08-22
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          python-version: "3.11"
-      - run: python -m pip install -r requirements/test.txt
-      - run: python scripts/run_all.py
-  linux-py314:
-    name: linux-py314
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7 observed 2026-08-22
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
-          python-version: "3.14"
+          python-version: ${{ matrix.python }}
       - run: python -m pip install -r requirements/test.txt
-      - run: python scripts/run_all.py
-  windows-py313:
-    name: windows-py313
-    runs-on: windows-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7 observed 2026-08-22
-        with:
-          python-version: "3.13"
-      - run: python -m pip install -r requirements/test.txt
-      - run: python scripts/run_all.py
-  macos-py313:
-    name: macos-py313
-    runs-on: macos-latest
-    timeout-minutes: 20
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7 observed 2026-08-22
-        with:
-          python-version: "3.13"
-      - run: python -m pip install -r requirements/test.txt
-      - run: python scripts/run_all.py
+      - run: python tools/validate_repo.py
+      - run: python -m unittest discover -s tests/semantics -p "test_*.py"

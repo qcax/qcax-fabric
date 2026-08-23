@@ -1,0 +1,56 @@
+{
+  "mappings": [
+    {
+      "clean_path": "packages/plugins/authorization",
+      "distribution": "qcax-fabric-plugin-authorization",
+      "live_path": "packages/plugins/authorization",
+      "live_pyproject_blob_sha": "371a3563cbd0672e8bcbc2b8b1396f002a4f8c6f"
+    },
+    {
+      "clean_path": "packages/plugins/canonical_identity",
+      "distribution": "qcax-fabric-plugin-canonical-identity",
+      "live_path": "packages/plugins/canonical-identity",
+      "live_pyproject_blob_sha": "182e5a6c9b61d404edd064fe3b2623144a6660bd"
+    },
+    {
+      "clean_path": "packages/plugins/hello_example",
+      "distribution": "qcax-fabric-plugin-hello-example",
+      "live_path": "packages/plugins/hello-plugin",
+      "live_pyproject_blob_sha": "8723787c6c1fa3ff7eb8b7be0a3b254f5efec8f5"
+    },
+    {
+      "clean_path": "packages/plugins/memory",
+      "distribution": "qcax-fabric-plugin-memory",
+      "live_path": "packages/plugins/memory",
+      "live_pyproject_blob_sha": "5f1bb43828b95300912308845faf385e5abce35e"
+    },
+    {
+      "clean_path": "packages/plugins/prompt_hardener",
+      "distribution": "qcax-fabric-plugin-prompt-hardener",
+      "live_path": "packages/plugins/prompt-hardener",
+      "live_pyproject_blob_sha": "7ba9b13754aa507c05129b41d6323d348f9115bb"
+    },
+    {
+      "clean_path": "packages/plugins/provenance",
+      "distribution": "qcax-fabric-plugin-provenance",
+      "live_path": "packages/plugins/provenance",
+      "live_pyproject_blob_sha": "258291f6df168a73bb9a1b574af1dba7b39222d6"
+    },
+    {
+      "clean_path": "packages/plugins/source_admission",
+      "distribution": "qcax-fabric-plugin-source-admission",
+      "live_path": "packages/plugins/source-admission",
+      "live_pyproject_blob_sha": "83362e829e92738846624a12507e51c20cb733b0"
+    },
+    {
+      "clean_path": "packages/plugins/truth_policy",
+      "distribution": "qcax-fabric-plugin-truth-policy",
+      "live_path": "packages/plugins/truth-policy",
+      "live_pyproject_blob_sha": "858d6159daf338d3da562318febd68736190c4af"
+    }
+  ],
+  "rule": "Live paths are source evidence only; clean-slate path authority remains R10. Renames do not transfer execution credit.",
+  "schema": "qcax.clean-slate-path-migration/1",
+  "source_commit": "74e6d62e633746676650d66c6789dd6f56621305",
+  "source_tree": "fb2e4db4e268107c098750f3060c341b9dae7680"
+}
