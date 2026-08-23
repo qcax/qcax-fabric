@@ -206,9 +206,9 @@
     },
     "historical_planned_tag": "v0.1.0-alpha.1",
     "historical_planned_version": "0.1.0a1",
-    "selected_tag": null,
-    "selected_version": null,
-    "status": "HOLD_UNTIL_SEMANTIC_VERSION_GATE"
+    "selected_tag": "v0.1.0-alpha.1",
+    "selected_version": "0.1.0a1",
+    "status": "ACTIVE"
   },
   "repository": "qcax/qcax-fabric",
   "repository_restart_model": "clean-slate implementation preserving proven semantic contracts only",

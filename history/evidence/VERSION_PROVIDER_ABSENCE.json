@@ -1,16 +1,131 @@
 {
-  "claim_ceiling": "Search miss is not provider absence proof. Do not activate alpha1 until direct provider evidence or equivalent authoritative readback.",
-  "github_evidence_boundary": "fresh direct ref/read evidence from immediately preceding release-context work; current main unchanged",
-  "github_release_tag": "ABSENT_FRESH_PRIOR_READ",
+  "claim_ceiling": "This receipt proves current public provider absence for the exact alpha1 tag/release identity and current PyPI project/version identities from direct provider reads reported by the user. It does not prove historical never-existed state, hidden GitHub draft-release absence, provider ownership, production readiness, or publication readiness.",
+  "evidence_basis": "USER_EXECUTED_DIRECT_PROVIDER_READS_RECORDED_IN_CURRENT_CHAT",
+  "github_direct_reads": {
+    "release_by_tag": {
+      "status_code": 404,
+      "url": "https://api.github.com/repos/qcax/qcax-fabric/releases/tags/v0.1.0-alpha.1"
+    },
+    "tag_ref": {
+      "status_code": 404,
+      "url": "https://api.github.com/repos/qcax/qcax-fabric/git/ref/tags/v0.1.0-alpha.1"
+    }
+  },
+  "github_evidence_boundary": "Current public tag ref and public Release-by-tag endpoint returned 404. Hidden draft-release absence is not established by the unauthenticated public read.",
+  "github_release_tag": "ABSENT_DIRECT_PROVIDER_READ",
   "identity": {
     "distribution_count": 11,
     "github_tag": "v0.1.0-alpha.1",
     "python_version": "0.1.0a1"
   },
-  "overall": "HOLD_PROVIDER_ABSENCE",
-  "pypi_identity": "INACCESSIBLE_CURRENT_CONNECTOR",
-  "pypi_search_observation": "NO_RESULTS_FOR_ALL_11_EXACT_PROJECT_NAMES",
+  "operation": "READ_ONLY",
+  "overall": "NO_PRIOR_ARTIFACT_PROVED",
+  "provider_request_timestamp_boundary": "Exact provider request timestamps were generated in the local receipt files but were not included in the pasted console summaries; this repository receipt records the chat admission time rather than inventing request timestamps.",
+  "pypi_direct_reads": [
+    {
+      "project": "qcax-fabric-contracts",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-contracts/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-contracts/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-contracts/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-sdk",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-sdk/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-sdk/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-sdk/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-host",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-host/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-host/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-host/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-authorization",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-authorization/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-authorization/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-authorization/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-canonical-identity",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-canonical-identity/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-canonical-identity/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-canonical-identity/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-memory",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-memory/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-memory/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-memory/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-prompt-hardener",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-prompt-hardener/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-prompt-hardener/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-prompt-hardener/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-provenance",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-provenance/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-provenance/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-provenance/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-source-admission",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-source-admission/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-source-admission/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-source-admission/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-truth-policy",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-truth-policy/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-truth-policy/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-truth-policy/0.1.0a1/json"
+    },
+    {
+      "project": "qcax-fabric-plugin-hello-example",
+      "project_json_status": 404,
+      "project_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-hello-example/json",
+      "simple_index_status": 404,
+      "simple_index_url": "https://pypi.org/simple/qcax-fabric-plugin-hello-example/",
+      "version_json_status": 404,
+      "version_json_url": "https://pypi.org/pypi/qcax-fabric-plugin-hello-example/0.1.0a1/json"
+    }
+  ],
+  "pypi_identity": "ABSENT_DIRECT_PROVIDER_READ",
+  "pypi_search_observation": "PRIOR_SEARCH_MISSES_RETAINED_AS_NON_PROOF_ONLY",
   "pypi_search_observation_is_absence_proof": false,
+  "recorded_utc": "2026-08-23T20:29:15Z",
   "schema": "qcax.version-provider-absence/1",
   "target": "qcax/qcax-fabric"
 }
