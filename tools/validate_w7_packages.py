@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import hashlib, json, re, sys, tomllib
+import hashlib, json, re, subprocess, sys, tomllib
 from packaging.requirements import Requirement
 from packaging.utils import canonicalize_name
 
@@ -13,6 +13,19 @@ def check(cond,msg):
     if not cond: errors.append(msg)
 
 def git_blob_sha(path:Path):
+    # Prefer the committed Git object so checkout newline filters (notably
+    # core.autocrlf on Windows runners) cannot masquerade as source drift.
+    try:
+        rel=path.resolve().relative_to(ROOT.resolve()).as_posix()
+        proc=subprocess.run(
+            ['git','rev-parse',f'HEAD:{rel}'], cwd=str(ROOT),
+            capture_output=True, text=True, timeout=10,
+        )
+        sha=proc.stdout.strip()
+        if proc.returncode==0 and re.fullmatch(r'[0-9a-f]{40}',sha):
+            return sha
+    except Exception:
+        pass
     b=path.read_bytes()
     return hashlib.sha1(f"blob {len(b)}\0".encode()+b).hexdigest()
 
