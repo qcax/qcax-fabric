@@ -269,5 +269,18 @@ class ReplayEquivalenceTests(unittest.TestCase):
             self.assertNotEqual(provenance_core(a), provenance_core(b))
 
 
+class ReleaseWorkflowPermissionTests(unittest.TestCase):
+    def test_publish_job_can_read_preflight_run_and_artifact(self):
+        enabled = (ROOT / ".github/workflows/release-build.yml").read_text(encoding="utf-8")
+        reviewed = (ROOT / "github/workflows-ready/release-build.yml").read_text(encoding="utf-8")
+        self.assertEqual(enabled, reviewed)
+        publish = enabled.split("\n  publish:\n", 1)[1].split("\n  tag-replay:\n", 1)[0]
+        self.assertIn("    permissions:\n      actions: read\n      contents: write\n      attestations: read\n", publish)
+        self.assertIn("python scripts/reconcile_release_prestate.py", publish)
+        prestate = (ROOT / "scripts/reconcile_release_prestate.py").read_text(encoding="utf-8")
+        self.assertIn('"run", "view"', prestate)
+        self.assertIn('"run", "download"', prestate)
+
+
 if __name__ == "__main__":
     unittest.main()
