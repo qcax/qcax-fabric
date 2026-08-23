@@ -1,0 +1,99 @@
+name: release-publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_commit:
+        required: true
+        description: "Exact frozen main commit"
+      release_tag:
+        required: true
+        description: "Exact activated release tag"
+      preflight_run_id:
+        required: true
+        description: "Successful release-preflight run"
+      candidate_artifact_id:
+        required: true
+        description: "Exact candidate artifact database id"
+      candidate_artifact_digest:
+        required: true
+        description: "Expected sha256:<hex> artifact digest"
+      confirmation:
+        required: true
+        description: "PUBLISH-<release_tag>"
+
+concurrency:
+  group: qcax-release-publish
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: github-release
+    env:
+      ACTIONS_CACHE_MODE: none
+    permissions:
+      actions: read
+      contents: write
+      attestations: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.13"
+      - name: Assert guarded request and exact current main
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "${{ inputs.expected_commit }}" =~ ^[0-9a-f]{40}$ ]]
+          [[ "${{ inputs.preflight_run_id }}" =~ ^[0-9]+$ ]]
+          [[ "${{ inputs.candidate_artifact_id }}" =~ ^[0-9]+$ ]]
+          [[ "${{ inputs.candidate_artifact_digest }}" =~ ^sha256:[0-9a-f]{64}$ ]]
+          test "$GITHUB_REPOSITORY" = "qcax/qcax-fabric"
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$GITHUB_SHA" = "${{ inputs.expected_commit }}"
+          test "${{ inputs.confirmation }}" = "PUBLISH-${{ inputs.release_tag }}"
+          python release/tooling/activate_contract.py --tag "${{ inputs.release_tag }}" --commit "${{ inputs.expected_commit }}" --verify-only
+      - run: python -m pip install -r requirements/test.txt -r requirements/release.txt
+      - name: Reconcile exact preflight run and artifact metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          python release/tooling/reconcile_preflight.py
+          --run-id "${{ inputs.preflight_run_id }}"
+          --artifact-id "${{ inputs.candidate_artifact_id }}"
+          --artifact-digest "${{ inputs.candidate_artifact_digest }}"
+          --receipt-artifact-name "qcax-preflight-receipt-${{ inputs.release_tag }}"
+          --commit "${{ inputs.expected_commit }}"
+          --tag "${{ inputs.release_tag }}"
+          --download release-assets
+      - name: Reverify exact candidate and attestations
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python release/tooling/verify_candidate.py release-assets
+          python release/tooling/verify_github_attestations.py release-assets
+          python conformance/run_exact_wheel_canaries.py release-assets
+          python conformance/run_out_of_tree_canary.py release-assets
+      - name: Draft reconcile and publish immutable GitHub release once
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          python release/tooling/publish_github.py release-assets
+          --repo "$GITHUB_REPOSITORY"
+          --tag "${{ inputs.release_tag }}"
+          --commit "${{ inputs.expected_commit }}"
+      - name: Verify immutable release, tag, release attestation and downloaded assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          python release/tooling/verify_github_release.py release-assets
+          --repo "$GITHUB_REPOSITORY"
+          --tag "${{ inputs.release_tag }}"
+          --commit "${{ inputs.expected_commit }}"

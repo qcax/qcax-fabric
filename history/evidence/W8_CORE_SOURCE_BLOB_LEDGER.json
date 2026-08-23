@@ -1,0 +1,58 @@
+{
+  "commit": "74e6d62e633746676650d66c6789dd6f56621305",
+  "files": [
+    {
+      "git_blob_sha": "65de5aa17dfaa5d42d92aa5507e23af0621ffbfd",
+      "path": "packages/contracts/src/qcax_fabric_contracts/__init__.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "46c56e94959c723b96040f7fa3e1432a6e9dc729",
+      "path": "packages/contracts/src/qcax_fabric_contracts/canonical.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "bf1f9f3a30745512073753776b35a394f07e0714",
+      "path": "packages/contracts/src/qcax_fabric_contracts/model.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "f768d3db209ce1783038327ab435aa97e32ad8a2",
+      "path": "packages/contracts/src/qcax_fabric_contracts/versioning.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "b294f1d0844a351b14f64b02bca28de61b5ce9bf",
+      "path": "packages/sdk/src/qcax_fabric_sdk/__init__.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "f2d7b120941989223c9aa5b18f107b567e461067",
+      "path": "packages/sdk/src/qcax_fabric_sdk/discovery.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "703336273bdf2b1347c51e6b8ab98904bb9785f8",
+      "path": "packages/sdk/src/qcax_fabric_sdk/installation.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "87805a5c310d3acf30b459c3787efd219a6583be",
+      "path": "packages/sdk/src/qcax_fabric_sdk/plugin.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "13434c3e3bb50a993c37b4fe69180da0864e2392",
+      "path": "packages/host/src/qcax_fabric_host/__init__.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    },
+    {
+      "git_blob_sha": "d69cabbe7476bc1dae8fddb5fd824b3943a399bf",
+      "path": "packages/host/src/qcax_fabric_host/host.py",
+      "status": "EXACT_CURRENT_COMMIT_BYTES"
+    }
+  ],
+  "schema": "qcax.current-commit-core-source-ledger/1",
+  "status": "EXACT_GIT_BLOB_MATCH_10_OF_10",
+  "tree": "fb2e4db4e268107c098750f3060c341b9dae7680"
+}

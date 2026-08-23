@@ -1,0 +1,74 @@
+{
+  "commit": "74e6d62e633746676650d66c6789dd6f56621305",
+  "evidence_class": "CURRENT_GITHUB_FILE_TEXT_PLUS_TREE_BLOB_SHA",
+  "projects": [
+    {
+      "clean_path": "packages/contracts",
+      "live_path": "packages/contracts",
+      "name": "qcax-fabric-contracts",
+      "pyproject_blob_sha": "0dd07e70336beae3f7993f0b8ea1ef396d076bd4"
+    },
+    {
+      "clean_path": "packages/sdk",
+      "live_path": "packages/sdk",
+      "name": "qcax-fabric-sdk",
+      "pyproject_blob_sha": "a1158d3b3e951dbc249d321e1de5ce386f9ec1f6"
+    },
+    {
+      "clean_path": "packages/host",
+      "live_path": "packages/host",
+      "name": "qcax-fabric-host",
+      "pyproject_blob_sha": "bf92883706d97b5cf10ce6e51c58cf73adaf0153"
+    },
+    {
+      "clean_path": "packages/plugins/authorization",
+      "live_path": "packages/plugins/authorization",
+      "name": "qcax-fabric-plugin-authorization",
+      "pyproject_blob_sha": "371a3563cbd0672e8bcbc2b8b1396f002a4f8c6f"
+    },
+    {
+      "clean_path": "packages/plugins/canonical_identity",
+      "live_path": "packages/plugins/canonical-identity",
+      "name": "qcax-fabric-plugin-canonical-identity",
+      "pyproject_blob_sha": "182e5a6c9b61d404edd064fe3b2623144a6660bd"
+    },
+    {
+      "clean_path": "packages/plugins/hello_example",
+      "live_path": "packages/plugins/hello-plugin",
+      "name": "qcax-fabric-plugin-hello-example",
+      "pyproject_blob_sha": "8723787c6c1fa3ff7eb8b7be0a3b254f5efec8f5"
+    },
+    {
+      "clean_path": "packages/plugins/memory",
+      "live_path": "packages/plugins/memory",
+      "name": "qcax-fabric-plugin-memory",
+      "pyproject_blob_sha": "5f1bb43828b95300912308845faf385e5abce35e"
+    },
+    {
+      "clean_path": "packages/plugins/prompt_hardener",
+      "live_path": "packages/plugins/prompt-hardener",
+      "name": "qcax-fabric-plugin-prompt-hardener",
+      "pyproject_blob_sha": "7ba9b13754aa507c05129b41d6323d348f9115bb"
+    },
+    {
+      "clean_path": "packages/plugins/provenance",
+      "live_path": "packages/plugins/provenance",
+      "name": "qcax-fabric-plugin-provenance",
+      "pyproject_blob_sha": "258291f6df168a73bb9a1b574af1dba7b39222d6"
+    },
+    {
+      "clean_path": "packages/plugins/source_admission",
+      "live_path": "packages/plugins/source-admission",
+      "name": "qcax-fabric-plugin-source-admission",
+      "pyproject_blob_sha": "83362e829e92738846624a12507e51c20cb733b0"
+    },
+    {
+      "clean_path": "packages/plugins/truth_policy",
+      "live_path": "packages/plugins/truth-policy",
+      "name": "qcax-fabric-plugin-truth-policy",
+      "pyproject_blob_sha": "858d6159daf338d3da562318febd68736190c4af"
+    }
+  ],
+  "schema": "qcax.current-commit-package-manifest-evidence/1",
+  "tree": "fb2e4db4e268107c098750f3060c341b9dae7680"
+}

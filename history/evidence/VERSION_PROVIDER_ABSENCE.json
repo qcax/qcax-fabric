@@ -1,0 +1,16 @@
+{
+  "claim_ceiling": "Search miss is not provider absence proof. Do not activate alpha1 until direct provider evidence or equivalent authoritative readback.",
+  "github_evidence_boundary": "fresh direct ref/read evidence from immediately preceding release-context work; current main unchanged",
+  "github_release_tag": "ABSENT_FRESH_PRIOR_READ",
+  "identity": {
+    "distribution_count": 11,
+    "github_tag": "v0.1.0-alpha.1",
+    "python_version": "0.1.0a1"
+  },
+  "overall": "HOLD_PROVIDER_ABSENCE",
+  "pypi_identity": "INACCESSIBLE_CURRENT_CONNECTOR",
+  "pypi_search_observation": "NO_RESULTS_FOR_ALL_11_EXACT_PROJECT_NAMES",
+  "pypi_search_observation_is_absence_proof": false,
+  "schema": "qcax.version-provider-absence/1",
+  "target": "qcax/qcax-fabric"
+}

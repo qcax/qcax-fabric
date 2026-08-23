@@ -1,0 +1,35 @@
+{
+  "authorization_sha256": "fe383dd75da30afe1b72be815098354a193bac07eeddde5e12784fce79f009d4",
+  "authorized": [
+    "dedicated successor branch",
+    "successor-branch commits/repairs",
+    "one PR",
+    "ordinary non-publishing PR/CI execution/rerun",
+    "read-only inspection",
+    "RedLab",
+    "affected-only repair",
+    "new Drive evidence artifacts"
+  ],
+  "date": "2026-08-23",
+  "interpretation": "narrower interpretation controls ambiguity",
+  "not_authorized": [
+    "main direct write",
+    "merge",
+    "tag",
+    "GitHub Release",
+    "PyPI",
+    "repository settings",
+    "rulesets",
+    "branch protection",
+    "environments",
+    "secrets",
+    "credentials",
+    "Trusted Publisher changes",
+    "deployment",
+    "unrelated mutation",
+    "destructive history rewrite"
+  ],
+  "schema": "qcax.branch-pr-authorization-receipt/1",
+  "target": "qcax/qcax-fabric",
+  "user_supplied_authorization_file": "Pasted markdown.md"
+}

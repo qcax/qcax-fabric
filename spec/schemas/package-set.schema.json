@@ -1,0 +1,57 @@
+{
+  "$id": "https://qcax.example/schema/package-set.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "package_set_digest_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "packages": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "dependencies": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "name": {
+            "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$",
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "publish": {
+            "type": "boolean"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "role",
+          "path",
+          "dependencies",
+          "publish"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema": {
+      "const": "qcax.package-set/2"
+    }
+  },
+  "required": [
+    "schema",
+    "packages",
+    "package_set_digest_sha256"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,98 @@
+{
+  "fail_closed_transitions": {
+    "attestation_mismatch": "BLOCK_ATTESTATION",
+    "published_file_hash_or_identity_mismatch": "INCIDENT",
+    "release_identity_not_activated": "BLOCK_VERSION_IDENTITY",
+    "some_pypi_projects_or_files_published_exactly_but_not_all": "PARTIAL_PYPI_PUBLICATION",
+    "source_moved": "HOLD_SOURCE_DRIFT",
+    "twin_build_mismatch": "BLOCK_REPRODUCIBILITY",
+    "unexpected_release_asset": "BLOCK_ARTIFACT_SET",
+    "wrong_or_existing_tag_binding": "BLOCK_PROVIDER_MISMATCH"
+  },
+  "happy_path": [
+    [
+      "SOURCE_UNFROZEN",
+      "SOURCE_FROZEN"
+    ],
+    [
+      "SOURCE_FROZEN",
+      "PREFLIGHT_BUILDING"
+    ],
+    [
+      "PREFLIGHT_BUILDING",
+      "PREFLIGHT_VERIFIED"
+    ],
+    [
+      "PREFLIGHT_VERIFIED",
+      "CANDIDATE_ATTESTED"
+    ],
+    [
+      "CANDIDATE_ATTESTED",
+      "GITHUB_DRAFT_RECONCILING"
+    ],
+    [
+      "GITHUB_DRAFT_RECONCILING",
+      "GITHUB_DRAFT_EXACT"
+    ],
+    [
+      "GITHUB_DRAFT_EXACT",
+      "GITHUB_IMMUTABLE_PUBLISHED"
+    ],
+    [
+      "GITHUB_IMMUTABLE_PUBLISHED",
+      "GITHUB_POSTVERIFY_PASS"
+    ],
+    [
+      "GITHUB_POSTVERIFY_PASS",
+      "REPLAY_PASS"
+    ],
+    [
+      "REPLAY_PASS",
+      "PYPI_PRECHECK_PASS"
+    ],
+    [
+      "PYPI_PRECHECK_PASS",
+      "PYPI_PUBLISHING"
+    ],
+    [
+      "PYPI_PUBLISHING",
+      "PYPI_EXACT"
+    ],
+    [
+      "PYPI_EXACT",
+      "PYPI_POSTVERIFY_PASS"
+    ],
+    [
+      "PYPI_POSTVERIFY_PASS",
+      "RELEASE_COMPLETE"
+    ]
+  ],
+  "initial": "SOURCE_UNFROZEN",
+  "schema": "qcax.release-state-machine/2",
+  "states": [
+    "SOURCE_UNFROZEN",
+    "SOURCE_FROZEN",
+    "PREFLIGHT_BUILDING",
+    "PREFLIGHT_VERIFIED",
+    "CANDIDATE_ATTESTED",
+    "GITHUB_DRAFT_RECONCILING",
+    "GITHUB_DRAFT_EXACT",
+    "GITHUB_IMMUTABLE_PUBLISHED",
+    "GITHUB_POSTVERIFY_PASS",
+    "REPLAY_PASS",
+    "PYPI_PRECHECK_PASS",
+    "PYPI_PUBLISHING",
+    "PARTIAL_PYPI_PUBLICATION",
+    "PYPI_EXACT",
+    "PYPI_POSTVERIFY_PASS",
+    "RELEASE_COMPLETE",
+    "HOLD_SOURCE_DRIFT",
+    "BLOCK_PROVIDER_MISMATCH",
+    "BLOCK_ATTESTATION",
+    "BLOCK_ARTIFACT_SET",
+    "BLOCK_REPRODUCIBILITY",
+    "BLOCK_VERSION_IDENTITY",
+    "YANK_REQUIRED",
+    "INCIDENT"
+  ]
+}

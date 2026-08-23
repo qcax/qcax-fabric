@@ -1,0 +1,47 @@
+{
+  "commit": "74e6d62e633746676650d66c6789dd6f56621305",
+  "plugins": {
+    "authorization": {
+      "descriptor_blob_sha": "e50a85bf78bc83fee050e3198079a613fae4d28c",
+      "module": "qcax_plugin_authorization",
+      "source_blob_sha": "766df66ce176e0b48abbd5f8a6ef8b597864632c"
+    },
+    "canonical_identity": {
+      "descriptor_blob_sha": "376ce563d5cf7b0e0d910b574c4dfc2096ecf073",
+      "module": "qcax_plugin_canonical_identity",
+      "source_blob_sha": "4e42828bc354026ecf7354a4be61b777e72a1ebd"
+    },
+    "hello_example": {
+      "descriptor_blob_sha": "4a553e09788d404c47bb03050263717095f3eec3",
+      "module": "qcax_plugin_hello_example",
+      "source_blob_sha": "f4e1c064ae1ddaf10a1649911e03b48e7ecd393b"
+    },
+    "memory": {
+      "descriptor_blob_sha": "20469c940bd0dbb42dede6232e5f537bd140939a",
+      "module": "qcax_plugin_memory",
+      "source_blob_sha": "5d2d8b224fddfce2de50d8b088316c4e7961294d"
+    },
+    "prompt_hardener": {
+      "descriptor_blob_sha": "c7f417e20d2662fd594547231a18f6af5e11be0c",
+      "module": "qcax_plugin_prompt_hardener",
+      "source_blob_sha": "88c8856654597edad6915ee6a8883dd2dfc8534e"
+    },
+    "provenance": {
+      "descriptor_blob_sha": "a4317706757e86b5b0c4bd88967f0f36a5bda017",
+      "module": "qcax_plugin_provenance",
+      "source_blob_sha": "24a0eda4d940f169a9de911fc801ed125c19349a"
+    },
+    "source_admission": {
+      "descriptor_blob_sha": "05041520f2852a1cd9a04d259c59d018297d8e8e",
+      "module": "qcax_plugin_source_admission",
+      "source_blob_sha": "2392d6933e5bf1568a10602420c4ddb1a541a171"
+    },
+    "truth_policy": {
+      "descriptor_blob_sha": "9830a3d44e4e9e34ffeb401627e3b5d1ca1f331a",
+      "module": "qcax_plugin_truth_policy",
+      "source_blob_sha": "710e8c1c4a9eb8f47c9ddba32e851f4325d5a0d4"
+    }
+  },
+  "schema": "qcax.current-commit-plugin-source-ledger/1",
+  "status": "EXACT_GIT_BLOB_MATCH_ALL_8"
+}

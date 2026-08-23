@@ -1,0 +1,229 @@
+{
+  "artifact_set": {
+    "distribution_classes_per_package": [
+      "wheel",
+      "sdist"
+    ],
+    "expected_asset_count": 30,
+    "formula": "2 * package_count + len(singleton_controls)",
+    "magic_constant_policy": "FORBID hard-coded 30 in release logic; derive from package set and control set",
+    "package_count": 11,
+    "package_set_digest_sha256": "b328178798965c049788626bec5d668263cc50cf5c4f2b02820895464566fdbc",
+    "rules": [
+      "exactly one wheel and one sdist per first-party publishable package unless a package-specific platform matrix is explicitly introduced",
+      "no duplicate filenames after normalization",
+      "every release asset is represented in payload-manifest.json and SHA256SUMS",
+      "payload-manifest.json binds source commit, source tree, release identity, package-set digest, workflow run ID/attempt, and every member asset digest",
+      "candidate container identity (Actions artifact ID and artifact SHA-256 digest) is recorded only after upload in a separate preflight-receipt.json; it MUST NOT be embedded into the artifact it hashes",
+      "preflight receipt binds candidate artifact ID/digest to payload-manifest SHA-256 plus source/release/run identities",
+      "release-lock binds package identities, normalized project names, versions, wheel hashes, sdist semantic-content hashes and dependency graph",
+      "SBOM coverage must include all publishable first-party projects and exact versions",
+      "release publisher must reject missing, unexpected, mismatched, or digest-unknown assets",
+      "conformance-bundle.zip binds the exact tests/, tools/ and conformance/ source snapshot used by the candidate"
+    ],
+    "schema": "qcax.release-artifact-set/2",
+    "singleton_controls": [
+      "release-lock.json",
+      "sbom.spdx.json",
+      "spec-bundle.zip",
+      "conformance-bundle.zip",
+      "RELEASE_NOTES.md",
+      "qcax-release-provenance.json",
+      "payload-manifest.json",
+      "SHA256SUMS"
+    ]
+  },
+  "attestation": {
+    "github_build_provenance": "required for all release assets",
+    "github_immutable_release_attestation": "required post publication",
+    "github_sbom_attestation": "required for wheels against release SBOM where supported",
+    "pypi_pep740": "required for each wheel/sdist published through Trusted Publisher",
+    "slsa_claim": "TARGET_BUILD_L2_EVIDENCE_ONLY; L3 prohibited without builder-isolation assessment"
+  },
+  "build": {
+    "cache_policy": "OFF_FOR_RELEASE",
+    "clean_builds": 2,
+    "fresh_install": "every wheel and sdist-derived wheel must install in clean environments",
+    "network_policy": "dependency acquisition may use network before frozen build environment; release candidate build should consume pinned admitted toolchain/dependencies; hermeticity is a future explicit target, not claimed",
+    "resolver_test": "construct local offline wheelhouse/simple-index over exact candidate set; host and plugins must resolve without PyPI",
+    "sdist_reproducibility": "semantic-content equivalence required; raw byte identity preferred but not required until backend is demonstrated deterministic",
+    "source_date_epoch": "derive from admitted git source commit timestamp; fail if invalid; propagate to child builds",
+    "wheel_reproducibility": "byte-identical twin required"
+  },
+  "claim_ceiling": "no production readiness, SLSA L3, independent security certification, exhaustive correctness, or external adapter conformance without separate evidence",
+  "irreversibility": {
+    "github": "after immutable release publication assets/tag are immutable; prepublication must use draft exact-set reconciliation",
+    "pypi": "files are uploaded one at a time across multiple projects; do not depend on upload order; partial publication is explicit and reconciled, never represented as atomic rollback",
+    "recovery": "wrong published PyPI artifact/version requires BLOCK + incident procedure; prefer yanking over destructive deletion when appropriate"
+  },
+  "package_set": {
+    "acyclic_expected": true,
+    "import_name_metadata_policy": {
+      "reason": "do not infer import metadata solely from distribution names; verify package contents and emitted core metadata",
+      "standard": "PEP 794 / current pyproject import-names and import-namespaces",
+      "status": "VERIFY_FROM_CLEAN_BUILT_WHEEL_BEFORE_ENABLING"
+    },
+    "package_set_digest_sha256": "b328178798965c049788626bec5d668263cc50cf5c4f2b02820895464566fdbc",
+    "packages": [
+      {
+        "dependencies": [],
+        "name": "qcax-fabric-contracts",
+        "path": "packages/contracts",
+        "publish": true,
+        "role": "contracts"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts"
+        ],
+        "name": "qcax-fabric-sdk",
+        "path": "packages/sdk",
+        "publish": true,
+        "role": "sdk"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-host",
+        "path": "packages/host",
+        "publish": true,
+        "role": "host"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-authorization",
+        "path": "packages/plugins/authorization",
+        "plugin_id": "authorization",
+        "publish": true,
+        "role": "plugin"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-canonical-identity",
+        "path": "packages/plugins/canonical_identity",
+        "plugin_id": "canonical-identity",
+        "publish": true,
+        "role": "plugin"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-memory",
+        "path": "packages/plugins/memory",
+        "plugin_id": "memory",
+        "publish": true,
+        "role": "plugin"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-prompt-hardener",
+        "path": "packages/plugins/prompt_hardener",
+        "plugin_id": "prompt-hardener",
+        "publish": true,
+        "role": "plugin"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-provenance",
+        "path": "packages/plugins/provenance",
+        "plugin_id": "provenance",
+        "publish": true,
+        "role": "plugin"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-source-admission",
+        "path": "packages/plugins/source_admission",
+        "plugin_id": "source-admission",
+        "publish": true,
+        "role": "plugin"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-truth-policy",
+        "path": "packages/plugins/truth_policy",
+        "plugin_id": "truth-policy",
+        "publish": true,
+        "role": "plugin"
+      },
+      {
+        "dependencies": [
+          "qcax-fabric-contracts",
+          "qcax-fabric-sdk"
+        ],
+        "name": "qcax-fabric-plugin-hello-example",
+        "path": "packages/plugins/hello_example",
+        "plugin_id": "hello-plugin",
+        "publish": true,
+        "role": "example_plugin"
+      }
+    ],
+    "schema": "qcax.package-set/2",
+    "source": "R9 live repository package metadata admitted as migration evidence",
+    "version_policy": "single coordinated pre-release version across all first-party packages unless future ADR explicitly allows independent versioning"
+  },
+  "publication_order": [
+    "source freeze",
+    "preflight candidate build and verification",
+    "candidate attestations",
+    "GitHub draft reconciliation",
+    "GitHub immutable publication",
+    "GitHub postpublication verification",
+    "independent tag/release replay",
+    "PyPI precheck and Trusted Publisher authorization",
+    "order-independent PyPI publication with reconciliation",
+    "PyPI missing-only exact publication with partial-state reconciliation",
+    "live-index clean-install smoke",
+    "release completion receipt"
+  ],
+  "release_identity": {
+    "decision_rule": {
+      "forbidden": "silently reuse historical identity after a material contract rewrite",
+      "if_material_contract_or_package_identity_changes": "advance to 0.1.0a2 / v0.1.0-alpha.2 or another explicitly reviewed pre-release identity",
+      "if_public_contract_and_package_identity_are_semantically_preserved": "0.1.0a1 / v0.1.0-alpha.1 may be retained because no release was published"
+    },
+    "historical_planned_tag": "v0.1.0-alpha.1",
+    "historical_planned_version": "0.1.0a1",
+    "selected_tag": null,
+    "selected_version": null,
+    "status": "HOLD_UNTIL_SEMANTIC_VERSION_GATE"
+  },
+  "repository": "qcax/qcax-fabric",
+  "repository_restart_model": "clean-slate implementation preserving proven semantic contracts only",
+  "schema": "qcax.release-contract/2",
+  "source_binding": {
+    "allowed_ref": "refs/heads/main",
+    "candidate_identity_layers": {
+      "container_layer": "external preflight receipt created after upload binds Actions artifact ID/digest to payload-manifest digest",
+      "payload_layer": "payload manifest binds member bytes + source/release/run identities before upload",
+      "reason": "container digest cannot be self-embedded in the container it hashes"
+    },
+    "forbid_arbitrary_ref_inputs": true,
+    "required_exact_commit": "40 lowercase hex supplied at dispatch and equality-checked against GITHUB_SHA",
+    "required_repository": "qcax/qcax-fabric",
+    "required_repository_id": "capture and freeze before implementation promotion",
+    "required_tree": "compute at preflight and embed in all receipts"
+  }
+}

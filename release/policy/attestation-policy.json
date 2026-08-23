@@ -1,0 +1,50 @@
+{
+  "github": {
+    "build_provenance": {
+      "required": true,
+      "subjects": "all release assets",
+      "verify_before_publish": true
+    },
+    "immutable_release": {
+      "binds": [
+        "tag",
+        "commit",
+        "release assets"
+      ],
+      "required": true,
+      "verify_after_publish": true
+    },
+    "sbom": {
+      "predicate": "exact release SBOM",
+      "required": true,
+      "subjects": "all wheel files"
+    }
+  },
+  "pypi": {
+    "pep740": {
+      "allowed_predicates": [
+        "SLSA Provenance",
+        "PyPI Publish"
+      ],
+      "required": true,
+      "subjects": "every wheel and sdist"
+    },
+    "postverify": {
+      "integrity_api_crosscheck": true,
+      "repository": "https://github.com/qcax/qcax-fabric",
+      "tool": "pypi-attestations verify pypi"
+    },
+    "trusted_publisher": {
+      "environment": "pypi",
+      "required": true,
+      "workflow": ".github/workflows/pypi-publish.yml"
+    }
+  },
+  "schema": "qcax.attestation-policy/2",
+  "slsa": {
+    "l3_gate": "separate documented builder assessment proving unforgeable provenance and inter-build isolation/cache-poisoning resistance",
+    "l3_status": "NOT_CLAIMED",
+    "spec": "v1.2",
+    "target": "Build L2 evidence"
+  }
+}

@@ -1,0 +1,18 @@
+# Template fragment; replace NAME/VERSION/IMPORTS after package audit.
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "REPLACE-NAME"
+version = "REPLACE-VERSION"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+# Add import-names/import-namespaces only after clean-wheel content audit.
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

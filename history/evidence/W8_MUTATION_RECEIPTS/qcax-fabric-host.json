@@ -1,0 +1,32 @@
+{
+  "actual_toolchain_lane": "CURRENT_SANDBOX_SETuptools_82.0.1_PACKAGING_25.0",
+  "installed_image_sha256": "02cf85cd0d9cf40c44df010db18d7fb2410f2a692b993b1ac007fd204371f631",
+  "lock_entry": {
+    "dependencies": [
+      "qcax-fabric-contracts",
+      "qcax-fabric-sdk"
+    ],
+    "distribution_name": "qcax-fabric-host",
+    "distribution_version": "0.1.0a1",
+    "installed_image_sha256": "02cf85cd0d9cf40c44df010db18d7fb2410f2a692b993b1ac007fd204371f631",
+    "plugin_ids": [],
+    "sdist_filename": "qcax_fabric_host-0.1.0a1.tar.gz",
+    "sdist_semantic_sha256": "b258d1e25f7f940da90022715b8606a87f3c1c5d7b48e62603f7d854d84840d6",
+    "sdist_sha256": "d7481891156260de89e755f98c281b8b80aa790593115002df00336e96ef93b6",
+    "wheel_filename": "qcax_fabric_host-0.1.0a1-py3-none-any.whl",
+    "wheel_sha256": "b69c80385db2dbfa91347d7de4269b01768b103cc634434192cf3edbee80738e"
+  },
+  "name": "qcax-fabric-host",
+  "schema": "qcax.w8-package-build-receipt/1",
+  "sdist": "qcax_fabric_host-0.1.0a1.tar.gz",
+  "sdist_derived_wheel_semantic_identical": true,
+  "sdist_semantic_sha256": "b258d1e25f7f940da90022715b8606a87f3c1c5d7b48e62603f7d854d84840d6",
+  "sdist_semantic_twin_identical": true,
+  "sdist_sha256": "d7481891156260de89e755f98c281b8b80aa790593115002df00336e96ef93b6",
+  "sdist_twin_byte_identical": false,
+  "verified_bytes": 29775,
+  "verified_record_entries": 7,
+  "wheel": "qcax_fabric_host-0.1.0a1-py3-none-any.whl",
+  "wheel_sha256": "b69c80385db2dbfa91347d7de4269b01768b103cc634434192cf3edbee80738e",
+  "wheel_twin_byte_identical": true
+}

@@ -1,0 +1,34 @@
+{
+  "actual_toolchain_lane": "CURRENT_SANDBOX_SETuptools_82.0.1_PACKAGING_25.0",
+  "installed_image_sha256": "2f573b66ffddc797f3cdc0b0f3aa37492b97a1634ccab316b912cb0dcd17483e",
+  "lock_entry": {
+    "dependencies": [
+      "qcax-fabric-contracts",
+      "qcax-fabric-sdk"
+    ],
+    "distribution_name": "qcax-fabric-plugin-authorization",
+    "distribution_version": "0.1.0a1",
+    "installed_image_sha256": "2f573b66ffddc797f3cdc0b0f3aa37492b97a1634ccab316b912cb0dcd17483e",
+    "plugin_ids": [
+      "org.qcax.authorization"
+    ],
+    "sdist_filename": "qcax_fabric_plugin_authorization-0.1.0a1.tar.gz",
+    "sdist_semantic_sha256": "fe6db481d0802cc8970eebf5b406cdf022aeab5e2054985c77392f21cf37f353",
+    "sdist_sha256": "762f8dde343bf700da758e644dd484482571b6c801aa4dc7dcc185fa55c4b9b6",
+    "wheel_filename": "qcax_fabric_plugin_authorization-0.1.0a1-py3-none-any.whl",
+    "wheel_sha256": "062d96b7d208cb3d291d8279108a4423e816c849e72bf57d5e2fb4a9dd53f3e6"
+  },
+  "name": "qcax-fabric-plugin-authorization",
+  "schema": "qcax.w8-package-build-receipt/1",
+  "sdist": "qcax_fabric_plugin_authorization-0.1.0a1.tar.gz",
+  "sdist_derived_wheel_semantic_identical": true,
+  "sdist_semantic_sha256": "fe6db481d0802cc8970eebf5b406cdf022aeab5e2054985c77392f21cf37f353",
+  "sdist_semantic_twin_identical": true,
+  "sdist_sha256": "762f8dde343bf700da758e644dd484482571b6c801aa4dc7dcc185fa55c4b9b6",
+  "sdist_twin_byte_identical": false,
+  "verified_bytes": 13506,
+  "verified_record_entries": 8,
+  "wheel": "qcax_fabric_plugin_authorization-0.1.0a1-py3-none-any.whl",
+  "wheel_sha256": "062d96b7d208cb3d291d8279108a4423e816c849e72bf57d5e2fb4a9dd53f3e6",
+  "wheel_twin_byte_identical": true
+}

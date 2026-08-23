@@ -1,11 +1,6 @@
-# Ownership routing only; this is not independent review while qcax is the sole eligible maintainer.
-/packages/contracts/ @qcax
-/packages/host/ @qcax
-/packages/sdk/ @qcax
-/packages/plugins/truth-policy/ @qcax
-/packages/plugins/canonical-identity/ @qcax
-/packages/plugins/provenance/ @qcax
-/packages/plugins/source-admission/ @qcax
-/packages/plugins/authorization/ @qcax
+# Advisory routing; not independent review evidence.
+* @qcax
+/release/ @qcax
 /spec/ @qcax
-/github/ @qcax
+/.github/workflows/ @qcax
+/packages/host/ @qcax

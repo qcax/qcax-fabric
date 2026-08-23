@@ -1,0 +1,19 @@
+{
+  "github": {
+    "after_publish": "verify only; no asset mutation; immutable release/tag mismatch is incident",
+    "before_publish": "draft may reconcile missing/mismatched exact-name assets only; unexpected assets block for explicit review"
+  },
+  "principles": [
+    "GET/re-read provider state after ambiguous mutation result",
+    "never blind retry",
+    "never clobber immutable/published state",
+    "resume exact partial state only after identity/digest reconciliation",
+    "record negative memory for disproven paths"
+  ],
+  "pypi": {
+    "broken_but_exact_release": "yank may be appropriate; preserve evidence",
+    "exact_partial": "continue after exact index + provenance reconciliation",
+    "wrong_file_or_identity": "incident; do not overwrite; evaluate whole-release yank"
+  },
+  "schema": "qcax.recovery-policy/2"
+}

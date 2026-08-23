@@ -1,0 +1,109 @@
+name: pypi-publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_commit:
+        required: true
+        description: "Exact source commit bound by immutable release"
+      release_tag:
+        required: true
+        description: "Exact immutable GitHub release tag"
+      replay_run_id:
+        required: true
+        description: "Successful release-replay run for this release"
+      confirmation:
+        required: true
+        description: "PYPI-<release_tag>"
+
+concurrency:
+  group: qcax-pypi-publish
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  precheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      ACTIONS_CACHE_MODE: none
+    permissions:
+      actions: read
+      contents: read
+      attestations: read
+    outputs:
+      publish_required: ${{ steps.plan.outputs.publish_required }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.expected_commit }}
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.13"
+      - name: Verify immutable GitHub release + replay + PyPI prestate
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >
+          python release/tooling/pypi_precheck.py
+          --repo "$GITHUB_REPOSITORY"
+          --tag "${{ inputs.release_tag }}"
+          --commit "${{ inputs.expected_commit }}"
+          --replay-run-id "${{ inputs.replay_run_id }}"
+          --confirmation "${{ inputs.confirmation }}"
+          --missing-out pypi-missing
+          --github-output "$GITHUB_OUTPUT"
+      - name: Upload exact missing distribution subset
+        if: steps.plan.outputs.publish_required == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: pypi-missing-${{ inputs.release_tag }}
+          path: pypi-missing/*
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    if: needs.precheck.outputs.publish_required == 'true'
+    needs: precheck
+    runs-on: ubuntu-latest
+    environment: pypi
+    timeout-minutes: 15
+    env:
+      ACTIONS_CACHE_MODE: none
+    permissions:
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: pypi-missing-${{ inputs.release_tag }}
+          path: dist
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33
+        with:
+          packages-dir: dist/
+          attestations: true
+
+  postverify:
+    if: ${{ always() && needs.precheck.result == 'success' && (needs.publish.result == 'success' || needs.publish.result == 'skipped') }}
+    needs: [precheck, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          ref: ${{ inputs.expected_commit }}
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -r requirements/release-verify.txt
+      - name: Verify all PyPI files, hashes, PEP 740 provenance and live installs
+        run: >
+          python release/tooling/pypi_postverify.py
+          --tag "${{ inputs.release_tag }}"
+          --commit "${{ inputs.expected_commit }}"
+          --repository "https://github.com/qcax/qcax-fabric"

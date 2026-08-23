@@ -1,0 +1,34 @@
+{
+  "actual_toolchain_lane": "CURRENT_SANDBOX_SETuptools_82.0.1_PACKAGING_25.0",
+  "installed_image_sha256": "fad56cb36c7fa8223a90a440248f9bad4aa0e23eb5923dcd9f9be479cfb35dae",
+  "lock_entry": {
+    "dependencies": [
+      "qcax-fabric-contracts",
+      "qcax-fabric-sdk"
+    ],
+    "distribution_name": "qcax-fabric-plugin-canonical-identity",
+    "distribution_version": "0.1.0a1",
+    "installed_image_sha256": "fad56cb36c7fa8223a90a440248f9bad4aa0e23eb5923dcd9f9be479cfb35dae",
+    "plugin_ids": [
+      "org.qcax.canonical-identity"
+    ],
+    "sdist_filename": "qcax_fabric_plugin_canonical_identity-0.1.0a1.tar.gz",
+    "sdist_semantic_sha256": "37497cccc6463bd6a5e9918bbea69b3ff373c4bd9ea19dd67ef7d8427c283372",
+    "sdist_sha256": "6a741b51a3a59017094a637eb899384092399b1223e79bb813367c45f88a2d0c",
+    "wheel_filename": "qcax_fabric_plugin_canonical_identity-0.1.0a1-py3-none-any.whl",
+    "wheel_sha256": "c6b88ff4d148e1ff05fcb4953d35b7884b9679ed6c4659e3177102e3481665b9"
+  },
+  "name": "qcax-fabric-plugin-canonical-identity",
+  "schema": "qcax.w8-package-build-receipt/1",
+  "sdist": "qcax_fabric_plugin_canonical_identity-0.1.0a1.tar.gz",
+  "sdist_derived_wheel_semantic_identical": true,
+  "sdist_semantic_sha256": "37497cccc6463bd6a5e9918bbea69b3ff373c4bd9ea19dd67ef7d8427c283372",
+  "sdist_semantic_twin_identical": true,
+  "sdist_sha256": "6a741b51a3a59017094a637eb899384092399b1223e79bb813367c45f88a2d0c",
+  "sdist_twin_byte_identical": false,
+  "verified_bytes": 13433,
+  "verified_record_entries": 8,
+  "wheel": "qcax_fabric_plugin_canonical_identity-0.1.0a1-py3-none-any.whl",
+  "wheel_sha256": "c6b88ff4d148e1ff05fcb4953d35b7884b9679ed6c4659e3177102e3481665b9",
+  "wheel_twin_byte_identical": true
+}

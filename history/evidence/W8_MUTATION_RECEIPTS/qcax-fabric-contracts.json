@@ -1,0 +1,29 @@
+{
+  "actual_toolchain_lane": "CURRENT_SANDBOX_SETuptools_82.0.1_PACKAGING_25.0",
+  "installed_image_sha256": "be51417ca1edba4a3bd14da8f94743878d4357299568eccba96095906e281d13",
+  "lock_entry": {
+    "dependencies": [],
+    "distribution_name": "qcax-fabric-contracts",
+    "distribution_version": "0.1.0a1",
+    "installed_image_sha256": "be51417ca1edba4a3bd14da8f94743878d4357299568eccba96095906e281d13",
+    "plugin_ids": [],
+    "sdist_filename": "qcax_fabric_contracts-0.1.0a1.tar.gz",
+    "sdist_semantic_sha256": "8c54da4dccc421c82a06911a7a1e4ed6d682edcd5c7e1440098087e955d1135b",
+    "sdist_sha256": "7909a5e53ba3ddc31f1436c6a5dd6b02cf444d6367f46e37eaf3c1b2fbb257d1",
+    "wheel_filename": "qcax_fabric_contracts-0.1.0a1-py3-none-any.whl",
+    "wheel_sha256": "ae65765ac6364c2695743680fff7343a474433e7fb745f78ffdc5b083e8f50fe"
+  },
+  "name": "qcax-fabric-contracts",
+  "schema": "qcax.w8-package-build-receipt/1",
+  "sdist": "qcax_fabric_contracts-0.1.0a1.tar.gz",
+  "sdist_derived_wheel_semantic_identical": true,
+  "sdist_semantic_sha256": "8c54da4dccc421c82a06911a7a1e4ed6d682edcd5c7e1440098087e955d1135b",
+  "sdist_semantic_twin_identical": true,
+  "sdist_sha256": "7909a5e53ba3ddc31f1436c6a5dd6b02cf444d6367f46e37eaf3c1b2fbb257d1",
+  "sdist_twin_byte_identical": false,
+  "verified_bytes": 27023,
+  "verified_record_entries": 9,
+  "wheel": "qcax_fabric_contracts-0.1.0a1-py3-none-any.whl",
+  "wheel_sha256": "ae65765ac6364c2695743680fff7343a474433e7fb745f78ffdc5b083e8f50fe",
+  "wheel_twin_byte_identical": true
+}

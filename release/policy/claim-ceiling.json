@@ -1,0 +1,22 @@
+{
+  "schema": "qcax.claim-ceiling/2",
+  "suite_can_claim": [
+    "current R9 snapshot admitted as historical evidence",
+    "current official standards and sibling repository patterns researched",
+    "clean-slate repository/release architecture designed",
+    "machine suite validated and mutation-tested",
+    "no existing GitHub repository mutation performed by this R10 suite"
+  ],
+  "suite_cannot_claim": [
+    "clean-slate repository implementation completed",
+    "release identity activated",
+    "final-main preflight passed for the clean-slate repository",
+    "GitHub immutable release published",
+    "PyPI projects/trusted publishers configured or published",
+    "production readiness",
+    "SLSA Build L3",
+    "independent security review or certification",
+    "formal proof or universal correctness",
+    "external adapter conformance or untrusted-plugin sandbox security"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "build_backend": {
+    "clean_slate_decision": "pin exact backend/toolchain version in release environment and lock; backend switch requires equivalence ADR and twin-build evidence",
+    "current_migration_evidence": "setuptools.build_meta with setuptools>=77; R9 CI installed setuptools==83.0.0",
+    "do_not_assume": "changing to uv-build/flit/hatchling is automatically safer"
+  },
+  "clean_install": {
+    "matrix": [
+      "linux-python3.11",
+      "linux-python3.14",
+      "macos-python3.13",
+      "windows-python3.13"
+    ],
+    "required": true
+  },
+  "network_and_lock": {
+    "forbid": "hand-written file falsely presented as a conforming lock",
+    "target": "PEP 751 pylock.release.toml generated and verified by a tool that preserves exact hashes/source identities",
+    "transition": "retain exact hashed requirements while pylock generator is evaluated"
+  },
+  "release_cache": "FORBIDDEN",
+  "schema": "qcax.reproducibility-policy/2",
+  "sdist": {
+    "preferred": "raw bytes identical",
+    "required": "normalized archive content manifest identical across clean builds"
+  },
+  "sdist_to_wheel": {
+    "required": "build wheel from each candidate sdist in clean env and compare installed semantic identity / plugin IDs / release-lock contract"
+  },
+  "source_date_epoch": {
+    "required": true,
+    "source": "exact admitted source commit timestamp",
+    "zip_floor": "1980-01-01T00:00:00Z"
+  },
+  "wheel": {
+    "required": "two clean independent builds produce byte-identical wheels"
+  }
+}

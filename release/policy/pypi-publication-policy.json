@@ -1,0 +1,48 @@
+{
+  "environment": "pypi",
+  "postverify": [
+    "download every published wheel/sdist from PyPI",
+    "verify SHA-256 equals candidate manifest",
+    "verify PEP 740 provenance / Trusted Publisher identity",
+    "clean install host plus first-party plugins from PyPI",
+    "run installed-image and out-of-tree plugin canaries"
+  ],
+  "precheck": [
+    "release identity activated",
+    "GitHub immutable release exact and replay PASS",
+    "all 11 project names ownership/pending publisher state confirmed",
+    "Trusted Publisher repository/workflow/environment identity matches every project",
+    "no target filename exists with a different digest",
+    "any already-present file must match exact SHA-256 and expected Trusted Publisher provenance",
+    "all internal dependency version constraints equal coordinated version"
+  ],
+  "project_count": 11,
+  "projects": [
+    "qcax-fabric-contracts",
+    "qcax-fabric-sdk",
+    "qcax-fabric-host",
+    "qcax-fabric-plugin-authorization",
+    "qcax-fabric-plugin-canonical-identity",
+    "qcax-fabric-plugin-memory",
+    "qcax-fabric-plugin-prompt-hardener",
+    "qcax-fabric-plugin-provenance",
+    "qcax-fabric-plugin-source-admission",
+    "qcax-fabric-plugin-truth-policy",
+    "qcax-fabric-plugin-hello-example"
+  ],
+  "publisher_model": "one GitHub Trusted Publisher workflow may be registered to multiple PyPI projects",
+  "schema": "qcax.pypi-publication-policy/2",
+  "transaction": {
+    "atomic": false,
+    "basis": "PyPI releases/files are uploaded one file at a time and QCAX spans multiple PyPI projects",
+    "dependency_visibility": "a partial run may temporarily expose dependents before foundations; this is recorded as PARTIAL_PYPI_PUBLICATION and is not RELEASE_COMPLETE",
+    "on_mismatch": "INCIDENT; never overwrite or blind-skip; evaluate yank of affected version(s)",
+    "on_partial_exact": "PARTIAL_PYPI_PUBLICATION; re-read index/integrity state; construct a new missing-only exact subset after review",
+    "upload_order": "NOT_A_CORRECTNESS_ASSUMPTION; the official publisher/tool/provider may choose file order"
+  },
+  "workflow": ".github/workflows/pypi-publish.yml",
+  "workflow_minimization": [
+    "download/obtain immutable verified distributions",
+    "publish distributions"
+  ]
+}

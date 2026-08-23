@@ -1,0 +1,113 @@
+{
+  "gates": [
+    {
+      "id": "G00",
+      "name": "reference admission",
+      "requires": [
+        "R9 evidence read",
+        "live repository snapshot captured",
+        "Drive late-source donor search"
+      ]
+    },
+    {
+      "id": "G01",
+      "name": "clean source topology",
+      "requires": [
+        "new tree matches architecture contract",
+        "history cannot influence runtime",
+        "generated directories ignored",
+        "workflow mirror duplication absent"
+      ]
+    },
+    {
+      "id": "G02",
+      "name": "package metadata",
+      "requires": [
+        "11 project identities explicit",
+        "normalized names unique",
+        "PEP639 license expression/files",
+        "import-name audit",
+        "dependency graph acyclic"
+      ]
+    },
+    {
+      "id": "G03",
+      "name": "tests/conformance",
+      "requires": [
+        "unit/integration/conformance/security",
+        "semantic mutations",
+        "external plugin canary",
+        "test-of-test mutations"
+      ]
+    },
+    {
+      "id": "G04",
+      "name": "reproducibility",
+      "requires": [
+        "two clean wheel twins exact",
+        "sdist semantic twins",
+        "sdist-derived wheel install parity",
+        "release cache disabled"
+      ]
+    },
+    {
+      "id": "G05",
+      "name": "candidate evidence",
+      "requires": [
+        "derived artifact set exact",
+        "SBOM coverage exact",
+        "manifest/checksums exact",
+        "build/SBOM attestations verify"
+      ]
+    },
+    {
+      "id": "G06",
+      "name": "GitHub publish",
+      "requires": [
+        "protected environment approval",
+        "source unchanged",
+        "provider draft exact",
+        "immutable publication once",
+        "release attestation verified"
+      ]
+    },
+    {
+      "id": "G07",
+      "name": "replay",
+      "requires": [
+        "release:published exact tag checkout",
+        "full assurance",
+        "class-aware rebuild equivalence"
+      ]
+    },
+    {
+      "id": "G08",
+      "name": "PyPI precheck",
+      "requires": [
+        "11 publisher bindings verified",
+        "target files absent or exact",
+        "GitHub replay PASS"
+      ]
+    },
+    {
+      "id": "G09",
+      "name": "PyPI publish/postverify",
+      "requires": [
+        "order-independent reconciled upload",
+        "all file digests exact",
+        "PEP740 provenance verifies",
+        "live-index canaries pass"
+      ]
+    },
+    {
+      "id": "G10",
+      "name": "complete",
+      "requires": [
+        "release completion receipt",
+        "claim ceiling applied",
+        "evidence preserved"
+      ]
+    }
+  ],
+  "schema": "qcax.promotion-gates/2"
+}
