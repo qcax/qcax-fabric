@@ -1,6 +1,6 @@
 # QCAX Fabric Clean-Slate Release Operator Runbook
 
-Status: alpha1 identity is ACTIVE. Publication remains held until the W9 provider-facing tooling is merged and current provider configuration gates are directly verified. Do not infer publication readiness from ACTIVE identity alone.
+Status: alpha1 identity is ACTIVE and the W9 provider-facing tooling is merged. Publication remains held until current provider configuration gates, including all per-project PyPI OIDC environments and Trusted Publisher mappings, are directly verified. Do not infer publication readiness from ACTIVE identity or merged tooling alone.
 
 ## 0. Rebase the active cut
 Read live `qcax/qcax-fabric` provider state and same-target admitted evidence. Record repository ID, main SHA/tree, open PRs, release/tag state, rulesets/environments, and action-pin ledger. If anything changed, invalidate only affected downstream evidence.
@@ -16,7 +16,7 @@ Current alpha1 checkpoint: `ACTIVE / v0.1.0-alpha.1 / 0.1.0a1`. Revalidate this 
 ## 2. Freeze source
 Require protected `main`, no open release-affecting PRs, all required checks passing, and exact 40-hex main commit. Freeze the Git tree and source timestamp. Record package-set digest.
 
-Before promotion, directly verify the effective main ruleset/bypass posture, required Actions SHA-pinning policy, immutable-release setting, `github-release` environment protections, `pypi` environment protections, and all eleven PyPI Trusted Publisher mappings. Historical inaccessible/blocker receipts are not current provider proof.
+Before promotion, directly verify the effective main ruleset/bypass posture, required Actions SHA-pinning policy, immutable-release setting, `github-release` environment protections, all eleven exact PyPI publishing environments, and all eleven exact PyPI Trusted Publisher mappings. Historical inaccessible/blocker receipts are not current provider proof.
 
 ## 3. Run release-preflight
 Dispatch only `.github/workflows/release-preflight.yml` from `main`, with exact commit and activated tag.
@@ -65,33 +65,46 @@ Never use blind `--clobber` recovery for a mismatched draft asset: deletion and 
 The workflow writes a tag/run/source-bound replay receipt and uploads it separately. No PyPI publication is allowed until replay and its receipt are PASS.
 
 ## 6. PyPI precheck
-Confirm all intended project names and current Trusted Publisher mappings for `.github/workflows/pypi-publish.yml` + environment `pypi`.
+Confirm all intended project names and every exact Trusted Publisher mapping for `.github/workflows/pypi-publish.yml`.
 
-A current direct provider-configuration receipt is mandatory; the checked-in `W9_PROVIDER_CONFIGURATION_TEMPLATE.json` is deliberately HOLD and is not evidence.
+The canonical project/environment map is `release/policy/pypi-publication-policy.json`. `qcax-fabric-contracts` retains environment `pypi`; every other project uses its own exact `pypi-*` environment. A current direct provider-configuration receipt is mandatory; the checked-in `W9_PROVIDER_CONFIGURATION_TEMPLATE.json` is deliberately HOLD and is not evidence.
 
 For each of the 11 projects and its wheel/sdist:
-- if target filename is absent, stage it for upload;
-- if present, accept only if SHA-256 and cryptographically verified Trusted Publisher provenance are exact;
+- if the target filename is absent, stage it only under that project's missing directory;
+- if present, accept only if SHA-256, PyPI Integrity API publisher kind/repository/workflow/environment, and cryptographically verified Trusted Publisher provenance are exact;
 - any mismatch or unexpected target-version file is INCIDENT, not skip-existing.
-Verify internal dependency constraints use the coordinated release version.
-Verify GitHub immutable release and replay run/receipt again.
+
+The precheck emits a missing-only matrix of exact project/environment pairs. Verify internal dependency constraints use the coordinated release version. Verify GitHub immutable release and replay run/receipt again.
 
 ## 7. PyPI publication
-PyPI is not a cross-project atomic transaction. Publish the exact missing-only distribution subset. Do **not** rely on the official action/provider upload order as a correctness or dependency-availability guarantee; a stopped run can expose an explicit partial state. Correctness comes from exact precheck, partial-state reconciliation, and complete postverification.
+PyPI is not a cross-project atomic transaction. Publish only the exact missing-only per-project distribution subsets. Do **not** rely on matrix scheduling, the official action/provider upload order, or dependency publication order as a correctness guarantee. A stopped run can expose an explicit partial state. Correctness comes from exact precheck, partial-state reconciliation, and complete postverification.
 
-The OIDC `publish` job must only download the prechecked artifact and invoke the pinned official PyPA publisher. No source checkout, build, code execution, or broad `contents:write` permission in the OIDC job.
+Each OIDC matrix job:
+- is bound to exactly one project-specific GitHub environment;
+- gets `id-token: write` only at job scope plus minimum `actions: read`;
+- downloads the prechecked artifact;
+- invokes the pinned official PyPA publisher on only that project's directory.
+
+The OIDC publish job must not check out source, build packages, run arbitrary repository code, or receive broad `contents:write`.
 
 On interruption:
 - re-read PyPI project/release/Integrity state;
 - classify exact already-published files;
 - continue only exact missing files after renewed authorization.
+
 On any wrong file/hash/publisher identity: stop and enter incident handling.
 
 ## 8. PyPI postverification
-Download all published distributions from PyPI. Verify:
+After every publication attempt for which precheck succeeded, including a partially failed or cancelled matrix, reconcile the actual PyPI state.
+
+Download all present distributions from PyPI and verify:
 - filename/project/version identity;
 - exact SHA-256 against immutable candidate;
+- exact PyPI Integrity API publisher kind/repository/workflow/environment;
 - PEP 740 provenance/Trusted Publisher identity cryptographically;
+- absence of unexpected target-version files.
+
+If any file remains missing, record `PARTIAL_PYPI_PUBLICATION` (or `PYPI_ALL_MISSING` when appropriate); if any mismatch or unexpected file exists, record `INCIDENT`. Only a complete exact state may continue to:
 - clean live-index installation of all eleven coordinated distributions;
 - exact-wheel installed-image canary;
 - out-of-tree plugin canary against PyPI-downloaded wheels.
