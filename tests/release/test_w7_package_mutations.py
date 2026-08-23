@@ -23,12 +23,15 @@ def main():
         mutate('W7_M2_VERSION_DRIFT','packages/host/pyproject.toml',replace('version = "0.1.0a1"','version = "0.1.0a2"'))
         mutate('W7_M3_LICENSE_DRIFT','packages/contracts/pyproject.toml',replace('license = "Apache-2.0"','license = "MIT"'))
         mutate('W7_M4_RESTORE_ORDERED_PYPI','release/policy/release-contract.json',replace('order-independent PyPI publication with reconciliation','ordered PyPI publication with reconciliation'))
-        def activate(p):
-            d=json.loads(p.read_text()); d['release_identity']['status']='ACTIVE'; p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n',encoding='utf-8')
-        mutate('W7_M5_PREMATURE_VERSION_ACTIVATION','release/policy/release-contract.json',activate)
+        def demote(p):
+            d=json.loads(p.read_text()); d['release_identity']['status']='HOLD_UNTIL_SEMANTIC_VERSION_GATE'; p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+        mutate('W7_M5_ACTIVE_IDENTITY_DEMOTION','release/policy/release-contract.json',demote)
+        def provider_hold(p):
+            d=json.loads(p.read_text()); d['overall']='HOLD_PROVIDER_ABSENCE'; p.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n',encoding='utf-8')
+        mutate('W7_M6_PROVIDER_GATE_ROLLBACK','history/evidence/VERSION_PROVIDER_ABSENCE.json',provider_hold)
         d=r/'packages/plugins/canonical-identity'; existed=d.exists()
         try:
-            d.mkdir(parents=True,exist_ok=True); q=run(r); cases.append({'id':'W7_M6_SILENT_LIVE_PATH_RESTORE','killed':q.returncode!=0})
+            d.mkdir(parents=True,exist_ok=True); q=run(r); cases.append({'id':'W7_M7_SILENT_LIVE_PATH_RESTORE','killed':q.returncode!=0})
         finally:
             if not existed:
                 try:d.rmdir()

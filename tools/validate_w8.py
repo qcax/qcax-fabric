@@ -109,7 +109,16 @@ def validate(root=ROOT_DEFAULT,candidate=CAND_DEFAULT):
  ck(not bad,'source contamination: '+','.join(bad[:10]))
  blockers=json.loads((root/'history/evidence/W7_PROVIDER_READBACK_BLOCKERS.json').read_text())
  ck(all(v['state']=='INACCESSIBLE_CURRENT_CONNECTOR' for v in blockers['blocked_properties'].values()),'provider blockers changed without readback')
- ck(contract['release_identity']['status']=='HOLD_UNTIL_SEMANTIC_VERSION_GATE','version identity unexpectedly promoted')
+ # W8 qualification remains valid after the separately evidenced provider-gated identity transition.
+ ri=contract.get('release_identity',{})
+ ck(ri.get('status')=='ACTIVE','version identity is not ACTIVE after provider gate closure')
+ ck(ri.get('selected_tag')=='v0.1.0-alpha.1','selected version tag drift')
+ ck(ri.get('selected_version')=='0.1.0a1','selected version drift')
+ provider=json.loads((root/'history/evidence/VERSION_PROVIDER_ABSENCE.json').read_text(encoding='utf-8'))
+ ck(provider.get('overall')=='NO_PRIOR_ARTIFACT_PROVED','provider gate not closed')
+ ck(provider.get('github_release_tag')=='ABSENT_DIRECT_PROVIDER_READ','GitHub direct absence evidence missing')
+ ck(provider.get('pypi_identity')=='ABSENT_DIRECT_PROVIDER_READ','PyPI direct absence evidence missing')
+ ck(provider.get('pypi_search_observation_is_absence_proof') is False,'search miss admitted as provider proof')
  return {'status':'PASS' if not errors else 'FAIL','checks':checks,'errors':errors}
 if __name__=='__main__':
  ap=argparse.ArgumentParser()

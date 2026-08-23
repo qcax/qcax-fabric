@@ -63,9 +63,27 @@ for rel in scan_roots:
         for pat in secret_patterns:
             ck(re.search(pat,text) is None,f'credential-like material in {p.relative_to(ROOT)}')
 
-# Release identity/publication remains fail-closed.
+# Release identity may be ACTIVE only when the bounded direct-provider gate is recorded;
+# publication authority remains fail-closed and separate.
 contract=json.loads((ROOT/'release/policy/release-contract.json').read_text(encoding='utf-8'))
-ck(contract['release_identity']['status']=='HOLD_UNTIL_SEMANTIC_VERSION_GATE','release identity unexpectedly active')
+ri=contract.get('release_identity',{})
+ck(ri.get('status')=='ACTIVE','release identity is not ACTIVE after provider gate closure')
+ck(ri.get('selected_tag')=='v0.1.0-alpha.1','selected release tag drift')
+ck(ri.get('selected_version')=='0.1.0a1','selected release version drift')
+provider=ROOT/'history/evidence/VERSION_PROVIDER_ABSENCE.json'
+ck(provider.is_file(),'version provider absence receipt missing')
+if provider.is_file():
+    pd=json.loads(provider.read_text(encoding='utf-8'))
+    ck(pd.get('overall')=='NO_PRIOR_ARTIFACT_PROVED','provider gate not closed')
+    ck(pd.get('github_release_tag')=='ABSENT_DIRECT_PROVIDER_READ','GitHub direct provider evidence missing')
+    ck(pd.get('pypi_identity')=='ABSENT_DIRECT_PROVIDER_READ','PyPI direct provider evidence missing')
+    ck(pd.get('pypi_search_observation_is_absence_proof') is False,'search miss admitted as provider proof')
+    gh=pd.get('github_direct_reads',{})
+    ck(gh.get('tag_ref',{}).get('status_code')==404,'GitHub tag-ref direct absence missing')
+    ck(gh.get('release_by_tag',{}).get('status_code')==404,'GitHub release-by-tag direct absence missing')
+    rows=pd.get('pypi_direct_reads',[])
+    ck(len(rows)==11,'PyPI direct-provider row count drift')
+    ck(all(x.get('project_json_status')==404 and x.get('version_json_status')==404 and x.get('simple_index_status')==404 for x in rows),'PyPI direct-provider absence incomplete')
 auth=ROOT/'history/evidence/BRANCH_PR_AUTHORIZATION_RECEIPT.json'
 ck(auth.is_file(),'branch/PR authorization receipt missing')
 if auth.is_file():
