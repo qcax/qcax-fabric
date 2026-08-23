@@ -203,13 +203,11 @@ class AssetDiffTests(unittest.TestCase):
     def test_compare_asset_sets_detects_exact_missing_mismatch_unexpected_unknown(self):
         with tempfile.TemporaryDirectory() as td:
             td = Path(td)
-
             def local(name, data):
                 p = td / name
                 p.write_bytes(data)
                 import hashlib
                 return LocalAsset(name, len(data), hashlib.sha256(data).hexdigest(), p)
-
             loc = {n.name: n for n in [local("exact", b"1"), local("missing", b"2"), local("bad", b"3"), local("unknown", b"4")]}
             remote = [
                 {"name": "exact", "size": 1, "digest": "sha256:" + loc["exact"].sha256},
