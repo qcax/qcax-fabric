@@ -279,8 +279,9 @@ class ReleaseWorkflowPermissionTests(unittest.TestCase):
         publish = enabled.split("\n  publish:\n", 1)[1].split("\n  tag-replay:\n", 1)[0]
         self.assertIn("    permissions:\n      actions: read\n      contents: write\n      attestations: read\n", publish)
         self.assertIn("python scripts/reconcile_release_prestate.py", publish)
-        self.assertIn("gh run view", (ROOT / "scripts/reconcile_release_prestate.py").read_text(encoding="utf-8"))
-        self.assertIn("gh run download", (ROOT / "scripts/reconcile_release_prestate.py").read_text(encoding="utf-8"))
+        prestate = (ROOT / "scripts/reconcile_release_prestate.py").read_text(encoding="utf-8")
+        self.assertIn('"run", "view"', prestate)
+        self.assertIn('"run", "download"', prestate)
 
 
 if __name__ == "__main__":
