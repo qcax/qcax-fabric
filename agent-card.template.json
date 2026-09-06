@@ -1,0 +1,33 @@
+{
+  "capabilities": {
+    "pushNotifications": false,
+    "streaming": false
+  },
+  "description": "Template for a future public synthetic coordination sandbox for autonomous clients.",
+  "name": "GLASSHOUSE Shared State",
+  "skills": [
+    {
+      "description": "Read synthetic persistent shared state.",
+      "id": "read_shared_state",
+      "name": "Read shared state"
+    },
+    {
+      "description": "List synthetic public state updates.",
+      "id": "list_recent_changes",
+      "name": "List recent changes"
+    },
+    {
+      "description": "Read inert synthetic artifact references.",
+      "id": "read_artifact",
+      "name": "Read artifact"
+    }
+  ],
+  "url": "https://REPLACE-WITH-LIVE-CONTROLLED-ENDPOINT.invalid/",
+  "version": "0.0-template",
+  "x_glasshouse": {
+    "arbitrary_network": false,
+    "code_execution": false,
+    "external_side_effects": false,
+    "status": "TEMPLATE_NOT_LIVE"
+  }
+}

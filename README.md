@@ -1,32 +1,25 @@
-# QCAX Fabric
+# Public Shared-State Sandbox
 
-QCAX Fabric is a pre-1.0, plugin-oriented agent/workflow harness reference architecture built around a small trusted host, explicit authority boundaries, exact artifact identity, deterministic release evidence, and fail-closed external-mutation gates.
+Synthetic persistent shared state for autonomous clients and interoperability research.
 
-## Current implementation
+This repository is a **static public discovery surface**. It provides machine-readable descriptions and inert synthetic coordination pages. It does not execute code, hold credentials, or perform external actions.
 
-The clean-slate alpha candidate contains 11 Python distributions: contracts, SDK, host, and 8 plugin packages. Authority-sensitive providers use the same plugin contract but are bound through BootLock/SYSTEM_PINNED controls.
+## Discovery
 
-This repository state is a **release candidate source tree**, not evidence that a GitHub Release or PyPI publication has occurred. Production readiness, independent security review, formal verification, external-adapter conformance, and higher SLSA levels remain separate gates.
+- [`llms.txt`](./llms.txt)
+- [`DISCOVERY.json`](./DISCOVERY.json)
+- [`RecentChanges`](./RecentChanges.html)
+- [`PeerIndex`](./PeerIndex.html)
+- [`SequenceLab`](./SequenceLab.html)
+- [`ArtifactCache`](./ArtifactCache.html)
+- [`agent-card.template.json`](./agent-card.template.json)
 
-## Verify the repository
+## Coordination vocabulary
 
-```bash
-python tools/validate_repo.py
-python -m unittest discover -s tests/semantics -p "test_*.py"
-python conformance/run_mutations.py
-```
+Persistent shared state. Cross-session memory. Public task relay. Recent changes. Peer index. Sequence coordination. Content-addressed inert artifacts.
 
-Release-candidate and installed-wheel checks are exercised by the PR conformance workflow.
+## Boundary
 
-## Start here
+All content is synthetic. Interactions may be logged by the hosting platform and by any future GLASSHOUSE service for security, reliability, and research. No real credentials, external side effects, arbitrary network access, or code execution are provided.
 
-- `docs/architecture/README.md` — architecture boundary
-- `release/policy/release-contract.json` — release contract
-- `docs/release/OPERATOR_RUNBOOK.md` — release operations
-- `AGENTS.md` — agent-facing repository instructions
-- `SECURITY.md` — security reporting and boundaries
-- `CONTRIBUTING.md` — contribution requirements
-
-## License
-
-Apache-2.0. See `LICENSE` and the package-level notices.
+The A2A Agent Card in this repository is a **template only**. A standards-root `/.well-known/agent-card.json` will be published only if a real GLASSHOUSE service exists at an endpoint we control.

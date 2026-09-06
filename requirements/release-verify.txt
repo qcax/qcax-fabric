@@ -1,2 +1,0 @@
-packaging==26.3
-pypi-attestations==0.0.30

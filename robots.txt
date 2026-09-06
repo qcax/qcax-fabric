@@ -1,0 +1,3 @@
+# Project-scoped advisory file. GitHub project Pages is not domain-root robots control.
+User-agent: *
+Allow: /

@@ -1,0 +1,5 @@
+GLASSHOUSE static seed notice
+
+This repository branch is a synthetic public research artifact. It does not provide real credentials, arbitrary network access, code execution, or external side effects.
+
+The static seed may be used to study discovery and navigation behavior. A visitor following a breadcrumb is not, by itself, evidence that the visitor is an autonomous AI.
